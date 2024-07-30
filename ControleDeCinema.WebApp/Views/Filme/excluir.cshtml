@@ -1,0 +1,31 @@
+﻿@model ControleDeCinema.WebApp.Models.ExcluirFilmeViewModel;
+
+@{
+	Layout = "_Layout";
+	ViewBag.Title = "Excluir Filme";
+}
+
+<div class="row mt-3">
+	<div class="col-lg-6 d-grid gap-2">
+		<label class="fs-5"><strong>Filme:</strong> @Model.Titulo</label>
+        
+		<label><strong>Id:</strong> [@Model.Id]</label>
+        
+		<p class="text-bg-danger p-3 rounded fs-5 mt-2">
+			Deseja excluir este filme? <br/> Não será possível recuperar os dados excluídos.
+		</p>
+
+		<form class="mt-2 d-grid gap-2 d-md-block" asp-action="excluir">
+			<button class="btn btn-danger px-5">
+				<i class="bi bi-trash-fill me-1"></i>
+				Excluir
+			</button>
+            
+			<a class="btn btn-secondary px-5" href="/filme/listar">
+				<i class="bi bi-arrow-return-left me-1"></i>
+				Voltar
+			</a>
+
+		</form>
+	</div>
+</div>

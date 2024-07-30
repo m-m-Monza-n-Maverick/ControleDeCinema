@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ControleDeCinema.Dominio.ModuloFilme.Filme">
+    <Position X="1" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAIAAAAAQQAAAAAgAAAAABA=</HashCode>
+      <FileName>ModuloFilme\Filme.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ControleDeCinema.Dominio.ModuloIngresso.Ingresso">
+    <Position X="5.25" Y="3.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAEAAAAAcAAAAAgAAAAAAA=</HashCode>
+      <FileName>ModuloIngresso\Ingresso.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Sessao" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ControleDeCinema.Dominio.ModuloSala.Sala">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAABAAAAAAAQAAAAAggAAAAAA=</HashCode>
+      <FileName>ModuloSala\Sala.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ControleDeCinema.Dominio.ModuloSessao.Sessao">
+    <Position X="2.5" Y="3.25" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Filme" Type="ControleDeCinema.Dominio.ModuloFilme.Filme" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.188" Y="3.25" />
+        <Point X="3.188" Y="1.563" />
+        <Point X="2.5" Y="1.563" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Sala" Type="ControleDeCinema.Dominio.ModuloSala.Sala" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.566" Y="3.25" />
+        <Point X="3.566" Y="1.563" />
+        <Point X="4.25" Y="1.563" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAIAIAAAACAAEAAAAAAAAAAAgAQAAAAAgAAAAAAA=</HashCode>
+      <FileName>ModuloSessao\Sessao.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Filme" />
+      <Property Name="Sala" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="10" />
+</ClassDiagram>
