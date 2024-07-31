@@ -10,6 +10,8 @@ namespace ControleDeCinema.Dominio.ModuloSessao
         public Filme Filme { get; set; }
         public decimal NumIngressos { get => Sala.AcentosDisponiveis; set{} }
         public bool Encerrada { get; set; }
+        List<string> poltronasOcupadas { get; set; }
+
 
         public Sessao(Sala sala, DateTime horario, Filme filme) : this ()
         {

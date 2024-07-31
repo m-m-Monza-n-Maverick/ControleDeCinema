@@ -6,10 +6,9 @@ namespace ControleDeCinema.Dominio.ModuloSala
         public decimal Capacidade { get; set; }
         public decimal AcentosDisponiveis { get; set; }
 
-        public Sala(decimal capacidade, decimal acentosDisponiveis) : this()
+        public Sala(decimal capacidade) : this()
         {
             Capacidade = capacidade;
-            AcentosDisponiveis = acentosDisponiveis;
         }
 
         public override void Atualizar(EntidadeBase registroAtualizado)

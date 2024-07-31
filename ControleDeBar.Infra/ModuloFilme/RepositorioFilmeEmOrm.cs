@@ -1,5 +1,6 @@
 ﻿using ControleDeCinema.Dominio.ModuloFilme;
 using ControleDeCinema.Infra.Orm.Compartilhado;
+using Microsoft.AspNetCore.Http;
 namespace ControleDeBar.Infra.Orm.ModuloFilme;
 public class RepositorioFilmeEmOrm : IRepositorioFilme
 {

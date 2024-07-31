@@ -1,0 +1,150 @@
+﻿@{
+    Layout = "_Layout";
+    ViewBag.Title = "Selecionar Lugares";
+
+    var filme = ViewBag.Sessao.Filme;
+    decimal capacidade = ViewBag.Sessao.Sala.Capacidade;
+    var poltronas = 0;
+    var filasInteiras = Math.Floor(capacidade / 16);
+    var filasContagem = filasInteiras + 65;
+    var poltronasExtras = capacidade - filasInteiras * 16;
+}
+
+<style>
+    body {
+        margin-inline: 13px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+
+<form id="lugaresForm" action="/ingresso/finalizarCompra" method="post" onsubmit="return validateForm()">
+    <div class="cinema-container">
+        <div class="screen">Tela</div>
+        <div class="seats-container">
+            @for (int i = 65; i <= filasContagem; i++)
+            {
+                for (int j = 1; j < 17; j++)
+                {
+                    if (j == 1)
+                    {
+                        <div class="aisle3">@Convert.ToChar(i)</div>
+                    }
+                    if (j == 9 && i != filasContagem)
+                    {
+                        <div class="aisle"></div>
+                    }
+
+                    <div class="seat">@Convert.ToChar(i)@j</div>
+                    poltronas++;
+
+                    if (i == filasContagem)
+                    {
+                        if (j == Math.Ceiling(poltronasExtras / 2))
+                        {
+                            <div class="aisle"></div>
+                        }
+                        if (j == poltronasExtras)
+                        {
+                            <div class="aisle3">@Convert.ToChar(i)</div>
+                        }
+                    }
+
+                    if (j == 16)
+                    {
+                        <div class="aisle3">@Convert.ToChar(i)</div>
+                    }
+                    if (poltronas == capacidade) break;
+                }
+                if (poltronas == capacidade) break;
+                if (i == 64 + Math.Floor(filasInteiras / 2) || i == filasContagem - 1)
+                {
+                    <div class="aisle2"></div>
+                }
+            }
+
+            @if (poltronasExtras % 2 != 0)
+            {
+                <div class="aisle3"></div>
+            }
+
+            <input type="hidden" name="poltronasSelecionadas" id="poltronasSelecionadas" />
+            <div id="error-message" class="error-message"></div>
+        </div>
+
+        <div class="legend">
+            <div class="available"><span></span>Disponível</div>
+            <div class="selected"><span></span>Selecionada</div>
+            <div class="occupied"><span></span>Ocupada</div>
+        </div>
+    </div>
+    <div class="btn-centralizar">
+        <div class="mt-3 d-grid gap-2 d-flex justify-content-center">
+            <button type="submit" class="btn-padronizar btn btn-primary">
+                <i class="bi bi-wallet2"></i>
+                Pagamento
+            </button>
+            <a class="btn-padronizar btn btn-secondary" href="/ingresso/selecionarSessao">
+                <i class="bi bi-arrow-return-left me-1"></i>
+                Voltar
+            </a>
+        </div>
+    </div>
+</form>
+
+<div class="sidebar">
+    <div class="sidebar-img-container">
+        @if (filme.ImageData != null && filme.ImageData.Length > 0)
+        {
+            var imageSrc = $"data:{filme.ImageContentType};base64,{Convert.ToBase64String(filme.ImageData)}";
+            <img src="@imageSrc" alt="Pôster do Filme" class="img-fluid" />
+        }
+        else
+        {
+            <div class="card-placeholder">
+                <p><em>Imagem não disponível.</em></p>
+            </div>
+        }
+    </div>
+    <div class="img-footer">
+        <span class="fs-6 fw-semibold mb-0">@filme.Titulo</span>
+    </div>
+    <p>Poltronas: <span id="selected-count">0</span></p>
+    <ul id="selected-seats"></ul>
+</div>
+
+<script>
+    // Seleção de poltronas
+    const seats = document.querySelectorAll('.seat:not(.occupied)');
+    const selectedCount = document.getElementById('selected-count');
+    const selectedSeatsList = document.getElementById('selected-seats');
+    const poltronasSelecionadasInput = document.getElementById('poltronasSelecionadas');
+
+    // Função para atualizar a contagem de poltronas selecionadas e a lista na barra lateral
+    function updateSelectedCount() {
+        const selectedSeats = document.querySelectorAll('.seat.selected');
+        const selectedSeatsArr = [...selectedSeats].map(seat => seat.textContent);
+        selectedCount.innerText = selectedSeats.length;
+        selectedSeatsList.innerHTML = selectedSeatsArr.map(seat => `<li>Assento ${seat}</li>`).join('');
+
+        // Atualiza o campo hidden com as poltronas selecionadas
+        poltronasSelecionadasInput.value = selectedSeatsArr.join(',');
+    }
+
+    seats.forEach(seat => {
+        seat.addEventListener('click', () => {
+            seat.classList.toggle('selected');
+            updateSelectedCount();
+        });
+    });
+
+    function validateForm() {
+        const poltronasSelecionadas = document.querySelectorAll('.seat.selected');
+        if (poltronasSelecionadas.length === 0) {
+            document.getElementById('error-message').innerText = 'Por favor, selecione pelo menos uma poltrona';
+            return false;
+        }
+        return true;
+    }
+</script>

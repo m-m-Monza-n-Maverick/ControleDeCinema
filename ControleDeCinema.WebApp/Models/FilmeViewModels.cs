@@ -1,5 +1,4 @@
-﻿using ControleDeCinema.Dominio.ModuloFilme;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 namespace ControleDeCinema.WebApp.Models
 {
 	public class ListarFilmeViewModel
@@ -8,32 +7,38 @@ namespace ControleDeCinema.WebApp.Models
 		public string Titulo { get; set; }
 		public TimeSpan Duracao { get; set; }
 		public string Genero { get; set; }
-	}
+    }
 
-	public class InserirFilmeViewModel
+    public class InserirFilmeViewModel
 	{
-		[Required(ErrorMessage = "O título do filme é obrigatório")]
+		[Required]
 		public string Titulo { get; set; }
 
-		[Required(ErrorMessage = "A duração do filme é obrigatória")]
+		[Required]
 		public TimeSpan Duracao { get; set; }
 
-		[Required(ErrorMessage = "O gênero do filme é obrigatório")]
+		[Required]
 		public string Genero { get; set; }
-	}
+
+		[Required]
+        public IFormFile Poster { get; set; }
+    }
 
 	public class EditarFilmeViewModel
 	{
 		public int Id { get; set; }
 
-		[Required(ErrorMessage = "O título do filme é obrigatório")]
+		[Required]
 		public string Titulo { get; set; }
 
-		[Required(ErrorMessage = "A duração do filme é obrigatória")]
+		[Required]
 		public TimeSpan Duracao { get; set; }
 
-		[Required(ErrorMessage = "O gênero do filme é obrigatório")]
+		[Required]
 		public string Genero { get; set; }
+
+		public byte[] ImageData { get; set; }
+		public string ImageContentType { get; set; }
 	}
 
 	public class ExcluirFilmeViewModel
@@ -50,5 +55,7 @@ namespace ControleDeCinema.WebApp.Models
 		public string Titulo { get; set; }
 		public TimeSpan Duracao { get; set; }
 		public string Genero { get; set; }
-	}
+        public byte[] ImageData { get; set; }
+        public string ImageContentType { get; set; }
+    }
 }

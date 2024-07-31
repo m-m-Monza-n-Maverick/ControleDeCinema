@@ -15,13 +15,229 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        /* Contêiner do cinema */
+        .cinema-container {
+            width: 100%;
+            max-width: 900px;
+            border: 1px solid #d4d6d5;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .ingresso-container {
+            width: 400px;
+            border: 1px solid #d4d6d5;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .btn-centralizar {
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+        }
+
+        .btn-padronizar {
+            width: 150px;
+        }
+
+        /* Tela do cinema */
+        .screen {
+            width: 100%;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 4px;
+            text-align: center;
+            line-height: 30px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        /* Contêiner de poltronas */
+        .seats-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-block: 80px 30px;
+            margin-inline: 2%;
+        }
+
+        /* Poltronas */
+        .seat {
+            width: 36px;
+            height: 42px;
+            background-color: #5a5c5b;
+            font-size: 12px;
+            color: #b9bdbb;
+            border-radius: 8px;
+            margin: 7px 3px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .seat:hover {
+                background-color: #666;
+            }
+
+            .seat.selected {
+                background-color: #05a345;
+                color: #065426
+            }
+
+            .seat.occupied {
+                background-color: #d3d3d3;
+                cursor: not-allowed;
+            }
+
+        .aisle {
+            width: 42px;
+            margin: 5px;
+        }
+
+        .aisle2 {
+            width: 5px;
+            margin: 15px 100%;
+        }
+
+        .aisle3 {
+            width: 36px;
+            height: 40px;
+            margin: 7px 3px;
+            font-weight: bold;
+            font-size: 11px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: not-allowed;
+        }
+
+        .sidebar {
+            position: absolute;
+            top: 168px;
+            right: 125px;
+            width: 190px;
+            background-color: #ccc;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .sidebar-img-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 100%; /* Altera a proporção da imagem */
+        }
+
+            .sidebar-img-container img {
+                position: absolute;
+                top: 4px;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .sidebar p {
+            margin-top: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0;
+            font-size: 13px;
+        }
+
+            .sidebar ul li {
+                margin-bottom: 5px;
+            }
+
+        .img-footer {
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        /* Legenda */
+        .legend {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+            .legend div {
+                display: flex;
+                align-items: center;
+            }
+
+                .legend div span {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 8px;
+                    display: inline-block;
+                    border-radius: 4px;
+                }
+
+            .legend .available span {
+                background-color: #5a5c5b;
+            }
+
+            .legend .selected span {
+                background-color: #05a345;
+            }
+
+            .legend .occupied span {
+                background-color: #d3d3d3;
+            }
+
+        .btn.selected {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .card {
+            margin-bottom: 1rem;
+        }
+
+        .card-footer {
+            text-align: center;
+        }
+
+        .card-img-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 100%; /* Altera a proporção da imagem */
+        }
+
+            .card-img-container img {
+                position: absolute;
+                top: 4px;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
 
     @* Navbar / Barra de Navegação *@
     <nav class="container">
         <header class="row row-cols-2 align-items-center my-3">
-            <label class="fs-3 fw-semibold">Controle de Cinema</label>
+            <label class="fs-4 fw-semibold">Controle de Cinema</label>
 
             <ul class="nav nav-pills d-grid d-md-flex justify-content-md-end">
                 <li class="nav-item"><a href="/filme/listar" class="@filmeAtivo">Filme</a></li>
@@ -34,7 +250,7 @@
 
     @* Conteúdo Principal *@
     <main class="container mt-4">
-        <h1>@ViewBag.Title</h1>
+        <h2>@ViewBag.Title</h2>
         <hr/>
         @RenderBody()
     </main>

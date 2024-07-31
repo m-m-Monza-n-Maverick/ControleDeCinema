@@ -37,6 +37,15 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(200)");
 
+                    b.Property<string>("ImageContentType")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("varchar(200)");
@@ -44,6 +53,28 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TBFilme", (string)null);
+                });
+
+            modelBuilder.Entity("ControleDeCinema.Dominio.ModuloIngresso.Ingresso", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Meia")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Sessao_Id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TBIngresso", (string)null);
                 });
 #pragma warning restore 612, 618
         }

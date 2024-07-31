@@ -18,8 +18,6 @@
 
 	<ItemGroup>
 	  <Folder Include="ModuloSala\" />
-	  <Folder Include="ModuloIngresso\" />
-	  <Folder Include="ModuloSessao\" />
 	</ItemGroup>
 
 </Project>

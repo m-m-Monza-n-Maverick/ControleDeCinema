@@ -1,5 +1,5 @@
 ﻿using ControleDeCinema.Dominio.Compartilhado;
 namespace ControleDeCinema.Dominio.ModuloIngresso
 {
-	internal interface IRepositorioIngresso : IRepositorio<Ingresso>;
+	public interface IRepositorioIngresso : IRepositorio<Ingresso>;
 }

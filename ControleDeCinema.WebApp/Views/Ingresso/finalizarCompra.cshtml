@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "_Layout";
+    ViewBag.Title = "Confirmar Compra";
+    var poltronasSelecionadas = ViewBag.Poltronas;
+}
+
+<div class="container mt-2">
+    <p>Selecione o tipo de ingresso:</p>
+    <div class="ingresso-container">
+        @foreach (var poltrona in poltronasSelecionadas)
+        {
+            <div class="d-flex align-items-center mb-2">
+                <label class="mx-3">Poltrona: <strong>@poltrona</strong></label>
+                <div class="btn-group mx-3" role="group" data-poltrona="@poltrona">
+                    <input type="radio" class="btn-check" name="tipo_@poltrona" id="inteira_@poltrona" value="Inteira" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="inteira_@poltrona">Inteira</label>
+
+                    <input type="radio" class="btn-check" name="tipo_@poltrona" id="meia_@poltrona" value="Meia" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="meia_@poltrona">Meia-entrada</label>
+                </div>
+            </div>
+        }
+    </div>
+    <h6 class="mt-4">Valor: </h6>
+    <div class="mt-4 d-grid gap-2 d-flex">
+        <button type="submit" class="btn-padronizar btn btn-primary" onclick="submitForm()">
+            <i class="bi bi-wallet2"></i>
+            Confirmar
+        </button>
+        <a class="btn-padronizar btn btn-secondary" href="/ingresso/selecionarLugares">
+            <i class="bi bi-arrow-return-left me-1"></i>
+            Voltar
+        </a>
+    </div>
+</div>
+
+<form id="confirmForm" action="/ingresso/concluir" method="post">
+    <input type="hidden" name="ingressos" id="ingressos">
+</form>
+
+<script>
+    function submitForm() {
+        var ingressos = [];
+        var gruposPoltronas = document.querySelectorAll('.btn-group[data-poltrona]');
+
+        gruposPoltronas.forEach(function (grupo) {
+            var poltrona = grupo.getAttribute('data-poltrona');
+            var isMeia = grupo.querySelector('input[name="tipo_' + poltrona + '"]:checked').value === "Meia";
+            ingressos.push(isMeia);
+        });
+
+        document.getElementById('ingressos').value = JSON.stringify(ingressos);
+        document.getElementById('confirmForm').submit();
+    }
+</script>

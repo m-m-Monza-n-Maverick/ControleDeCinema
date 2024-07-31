@@ -1,24 +1,34 @@
 ﻿@model ControleDeCinema.WebApp.Models.DetalhesFilmeViewModel
 
 @{
-	Layout = "_Layout";
-	ViewBag.Title = "Detalhes do Filme";
+    Layout = "_Layout";
+    ViewBag.Title = "Detalhes do Filme";
 }
 
 <div class="row">
-	<div class="col-lg-6 d-grid gap-2 d-md-block">
-        
-		<div class="d-grid">
-			<label class="fs-5"><strong>Filme:</strong> @Model.Titulo</label>
+    <div class="col-lg-3">
+        @if (Model.ImageData != null && Model.ImageData.Length > 0)
+        {
+            var base64Image = Convert.ToBase64String(Model.ImageData);
+            var imageSrc = $"data:{Model.ImageContentType};base64,{base64Image}";
 
-			<label><strong>Id:</strong> [@Model.Id]</label>
-			<label><strong>Duração:</strong> @Model.Duracao</label>
-			<label><strong>Gênero:</strong> @Model.Genero</label>
-		</div>
+            <img src="@imageSrc" alt="Pôster do Filme" class="img-fluid mb-3" />
+        }
+        else
+        {
+            <p><em>Imagem não disponível.</em></p>
+        }
 
-		<a href="/filme/listar" class="btn btn-secondary px-5 mt-4">
-			<i class="bi bi-arrow-return-left me-1"></i>
-			Voltar
-		</a>
-	</div>
+        <div class="d-grid">
+            <label class="fs-5"><strong>Filme:</strong> @Model.Titulo</label>
+            <label><strong>Id:</strong> [@Model.Id]</label>
+            <label><strong>Duração:</strong> @Model.Duracao</label>
+            <label><strong>Gênero:</strong> @Model.Genero</label>
+        </div>
+
+        <a href="/filme/listar" class="btn btn-secondary px-5 mt-4">
+            <i class="bi bi-arrow-return-left me-1"></i>
+            Voltar
+        </a>
+    </div>
 </div>
