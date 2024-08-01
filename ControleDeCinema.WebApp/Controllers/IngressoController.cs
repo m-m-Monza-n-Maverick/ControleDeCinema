@@ -6,14 +6,14 @@ using ControleDeCinema.Dominio.ModuloIngresso;
 using ControleDeCinema.Dominio.ModuloSala;
 using ControleDeCinema.Dominio.ModuloSessao;
 using ControleDeCinema.Infra.Orm.Compartilhado;
+using ControleDeCinema.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 namespace ControleDeCinema.WebApp.Controllers
 {
 	public class IngressoController : Controller
 	{
-        public Sessao Sessao { get; set; }
-
 		public ViewResult SelecionarFilme() 
 		{ 
 			var db = new ControleDeCinemaDbContext();
@@ -27,38 +27,21 @@ namespace ControleDeCinema.WebApp.Controllers
         [HttpPost]
         public ViewResult SelecionarSessao(int filmeSelecionadoId)
         {
-            if (filmeSelecionadoId <= 0)
-            {
-                ModelState.AddModelError("", "Nenhum filme foi selecionado.");
-                return View("selecionarFilme");
-            }
-
             var db = new ControleDeCinemaDbContext();
             var repositorioFilme = new RepositorioFilmeEmOrm(db);
             var repositorioSessao = new RepositorioSessaoEmOrm(db);
+
             var filme = repositorioFilme.SelecionarPorId(filmeSelecionadoId);
             var sala = new Sala(78);
-            //ViewBag.Sessoes = repositorioSessao.SelecionarTodos().FindAll(s => s.Filme == filme);
+            var sala1 = new Sala(30);
 
-            Sessao sessao = new(sala, DateTime.Now, filme)
-            {
-                Id = 1
-            };
+            var sessao = new Sessao(sala, DateTime.Now, filme);
+            var sessao1 = new Sessao(sala1, DateTime.Now, filme);
 
-            Sessao sessao2 = new(sala, DateTime.Now, filme)
-            {
-                Id = 2
-            };
+            repositorioSessao.Inserir(sessao);
+            repositorioSessao.Inserir(sessao1);
 
-            Sessao sessao3 = new(sala, DateTime.Now, filme)
-            {
-                Id = 3
-            };
-
-            List<Sessao> sessoes = [sessao, sessao2, sessao3];
-
-            ViewBag.Sessoes = sessoes;
-            ViewBag.Filme = filme;
+            ViewBag.Sessoes = repositorioSessao.SelecionarTodos().FindAll(s => s.Filme == filme);
 
             return View();
         }
@@ -66,65 +49,49 @@ namespace ControleDeCinema.WebApp.Controllers
         [HttpPost]
         public ViewResult SelecionarLugares(int sessaoSelecionadaId)
         {
-            if (sessaoSelecionadaId <= 0)
-            {
-                ModelState.AddModelError("", "Nenhuma sessão foi selecionada.");
-                return View("selecionarSessao");
-            }
-
             var db = new ControleDeCinemaDbContext();
-            var repositorioFilme = new RepositorioFilmeEmOrm(db);
-
             var repositorioSessao = new RepositorioSessaoEmOrm(db);
-            var filme = repositorioFilme.SelecionarTodos();
 
-            var sala = new Sala(78);
+            ViewBag.Sessao = repositorioSessao.SelecionarPorId(sessaoSelecionadaId);
 
-            Sessao sessao = new(sala, DateTime.Now, filme[0])
-            {
-                Id = sessaoSelecionadaId
-            };
+            return View();
+        }
 
-            Sessao = sessao;
+        [HttpPost]
+        public ViewResult FinalizarCompra(FinalizarCompraViewModel finalizarCompraVm)
+        {
+            var db = new ControleDeCinemaDbContext();
+            var repositorioSessao = new RepositorioSessaoEmOrm(db);
 
+            var sessao = repositorioSessao.SelecionarPorId(finalizarCompraVm.SessaoId);
+
+            ViewBag.Poltronas = finalizarCompraVm.PoltronasSelecionadas.Split(',').ToList();
             ViewBag.Sessao = sessao;
 
             return View();
         }
 
         [HttpPost]
-        public ViewResult FinalizarCompra(string poltronasSelecionadas)
+        public ViewResult Concluir(ConcluirViewModel concluirVm)
         {
-            if (string.IsNullOrEmpty(poltronasSelecionadas))
-            {
-                ModelState.AddModelError("", "Nenhuma poltrona selecionada. Por favor, selecione pelo menos uma poltrona");
-                return View("selecionarPoltronas");
-            }
-
-            ViewBag.Poltronas = poltronasSelecionadas.Split(',').ToList();
-
-            return View();
-        }
-
-        [HttpPost]
-        public ViewResult Concluir(string ingressos)
-        {
-            if (string.IsNullOrEmpty(ingressos))
-            {
-                ModelState.AddModelError("", "Nenhuma seleção de tipo de ingresso foi realizada");
-                return View("SelecionarPoltronas");
-            }
-
-            var ingressosTipos = JsonConvert.DeserializeObject<List<bool>>(ingressos);
-
             var db = new ControleDeCinemaDbContext();
             var repositorioIngresso = new RepositorioIngressoEmOrm(db);
+            var repositorioSessao = new RepositorioSessaoEmOrm(db);
+
+            var ingressosTipos = JsonConvert.DeserializeObject<List<bool>>(concluirVm.Ingressos);
+            var sessao = repositorioSessao.SelecionarPorId(concluirVm.SessaoId);
+            var poltronas = concluirVm.Poltronas.Split(',').ToList();
+            var i = 0;
 
             foreach (bool meia in ingressosTipos)
             {
-                var ingresso = new Ingresso(meia, 0, Sessao);
+                var ingresso = new Ingresso(meia, poltronas[i], 0, sessao);
                 repositorioIngresso.Inserir(ingresso);
+                i++;
             }
+
+            sessao.poltronasOcupadas.AddRange(poltronas);
+            repositorioSessao.Editar(sessao);
 
             var mensagem = new MensagemViewModel()
             {

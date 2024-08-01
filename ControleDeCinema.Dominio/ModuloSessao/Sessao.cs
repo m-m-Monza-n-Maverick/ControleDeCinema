@@ -8,9 +8,9 @@ namespace ControleDeCinema.Dominio.ModuloSessao
         public Sala Sala { get; set; }
         public DateTime Horario { get; set; }
         public Filme Filme { get; set; }
-        public decimal NumIngressos { get => Sala.AcentosDisponiveis; set{} }
+        public decimal NumIngressos { get; set; }//{ get => Sala.AcentosDisponiveis; set{} }
         public bool Encerrada { get; set; }
-        List<string> poltronasOcupadas { get; set; }
+        public List<string> poltronasOcupadas { get; set; }
 
 
         public Sessao(Sala sala, DateTime horario, Filme filme) : this ()
@@ -18,6 +18,7 @@ namespace ControleDeCinema.Dominio.ModuloSessao
             Sala = sala;
             Horario = horario;
             Filme = filme;
+            poltronasOcupadas = [];
         }
 
         public override void Atualizar(EntidadeBase registroAtualizado)

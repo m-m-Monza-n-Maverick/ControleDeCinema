@@ -1,9 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
-namespace ControleDeCinema.WebApp.Models
+﻿namespace ControleDeCinema.WebApp.Models
 {
-    public class SelecionarFilmeViewModel
+    public class FinalizarCompraViewModel
     {
-        [Required]
-        public int filmeSelecionadoId { get; set; }
+        public string PoltronasSelecionadas {  get; set; }
+        public int SessaoId { get; set; }
+    }
+
+    public class ConcluirViewModel
+    {
+        public string Ingressos { get; set; }
+        public int SessaoId { get; set; }
+        public string Poltronas { get; set; }
     }
 }

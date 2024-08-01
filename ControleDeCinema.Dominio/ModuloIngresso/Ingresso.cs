@@ -5,12 +5,14 @@ namespace ControleDeCinema.Dominio.ModuloIngresso
     public class Ingresso() : EntidadeBase
     {
 	    public bool Meia { get; set; }
+        public string Poltrona { get; set; }
         public decimal Valor { get; set; }
         public Sessao Sessao { get; set; }
 
-        public Ingresso(bool meia, decimal valor, Sessao sessao) : this()
+        public Ingresso(bool meia, string poltrona, decimal valor, Sessao sessao) : this()
         {
             Meia = meia;
+            Poltrona = poltrona;
             Valor = valor;
             Sessao = sessao;
         }

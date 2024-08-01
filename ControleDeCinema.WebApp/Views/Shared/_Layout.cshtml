@@ -88,8 +88,18 @@
                 color: #065426
             }
 
-            .seat.occupied {
-                background-color: #d3d3d3;
+            .seat-occupied {
+                width: 36px;
+                height: 42px;
+                background-color: #f04848;
+                font-size: 12px;
+                color: #7d0909;
+                border-radius: 8px;
+                margin: 7px 3px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: background-color 0.3s ease;
                 cursor: not-allowed;
             }
 
@@ -112,17 +122,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: not-allowed;
         }
 
         .sidebar {
+            border: 1px solid #d4d6d5;
             position: absolute;
             top: 168px;
             right: 125px;
             width: 190px;
-            background-color: #ccc;
             border-radius: 8px;
             padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar-img-container {
@@ -193,7 +203,7 @@
             }
 
             .legend .occupied span {
-                background-color: #d3d3d3;
+                background-color: #f04848;
             }
 
         .btn.selected {
@@ -201,9 +211,18 @@
             color: #fff;
         }
 
+
         .card {
+            overflow: hidden;
+            border-color: #b1bab3;
             margin-bottom: 1rem;
         }
+
+            .card.selected {
+                border: 2px solid #898c8b;
+                background-color: #f8f8f8;
+                color: #000;
+            }
 
         .card-footer {
             text-align: center;
@@ -264,6 +283,6 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="/lib/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
     
-    @RenderSection("Scripts", required: false);
+    @RenderSection("Scripts", required: false)
     </body>
 </html>

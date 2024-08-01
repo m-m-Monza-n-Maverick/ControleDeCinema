@@ -2,6 +2,7 @@
     Layout = "_Layout";
     ViewBag.Title = "Confirmar Compra";
     var poltronasSelecionadas = ViewBag.Poltronas;
+    var sessao = ViewBag.Sessao;
 }
 
 <div class="container mt-2">
@@ -36,6 +37,8 @@
 
 <form id="confirmForm" action="/ingresso/concluir" method="post">
     <input type="hidden" name="ingressos" id="ingressos">
+    <input type="hidden" name="sessaoId" value="@sessao.Id" />
+    <input type="hidden" name="poltronas" value="@string.Join(",", poltronasSelecionadas)" />
 </form>
 
 <script>

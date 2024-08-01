@@ -1,5 +1,6 @@
 ﻿using ControleDeCinema.Dominio.ModuloSessao;
 using ControleDeCinema.Infra.Orm.Compartilhado;
+using Microsoft.EntityFrameworkCore;
 namespace ControleDeBar.Infra.Orm.ModuloSessao;
 public class RepositorioSessaoEmOrm : IRepositorioSessao
 {
@@ -38,5 +39,5 @@ public class RepositorioSessaoEmOrm : IRepositorioSessao
     #endregion
 
     public List<Sessao> SelecionarTodos() => [.. dbContext.Sessoes];
-    public Sessao SelecionarPorId(int id) => dbContext.Sessoes.Find(id)!;
+    public Sessao SelecionarPorId(int id) => dbContext.Sessoes.Include(s => s.Filme).Include(s => s.Sala).FirstOrDefault(c => c.Id == id)!;
 }

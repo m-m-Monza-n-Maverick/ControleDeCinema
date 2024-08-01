@@ -2,12 +2,15 @@
     Layout = "_Layout";
     ViewBag.Title = "Selecionar Lugares";
 
-    var filme = ViewBag.Sessao.Filme;
-    decimal capacidade = ViewBag.Sessao.Sala.Capacidade;
-    var poltronas = 0;
+    var sessao = ViewBag.Sessao;
+    var poltronasOcupadas = sessao.poltronasOcupadas;
+    var filme = sessao.Filme;
+    var capacidade = ViewBag.Sessao.Sala.Capacidade;
     var filasInteiras = Math.Floor(capacidade / 16);
     var filasContagem = filasInteiras + 65;
     var poltronasExtras = capacidade - filasInteiras * 16;
+
+    var poltronas = 0;
 }
 
 <style>
@@ -27,49 +30,47 @@
             {
                 for (int j = 1; j < 17; j++)
                 {
-                    if (j == 1)
-                    {
-                        <div class="aisle3">@Convert.ToChar(i)</div>
-                    }
-                    if (j == 9 && i != filasContagem)
-                    {
-                        <div class="aisle"></div>
-                    }
+                    if (j == 1) {
+                        <div class="aisle3">@Convert.ToChar(i)</div> }
 
-                    <div class="seat">@Convert.ToChar(i)@j</div>
+                    if (j == 9 && i != filasContagem) {
+                        <div class="aisle"></div> }
+
+                    if (poltronasOcupadas.Contains($"{Convert.ToChar(i)}{j}")) {
+                        <div class="seat-occupied">@Convert.ToChar(i)@j</div> }                  
+                    else{
+                        <div class="seat">@Convert.ToChar(i)@j</div> }
+
                     poltronas++;
 
                     if (i == filasContagem)
                     {
-                        if (j == Math.Ceiling(poltronasExtras / 2))
-                        {
-                            <div class="aisle"></div>
-                        }
-                        if (j == poltronasExtras)
-                        {
-                            <div class="aisle3">@Convert.ToChar(i)</div>
-                        }
+                        if (j == Math.Ceiling(poltronasExtras / 2)) {
+                            <div class="aisle"></div> }
+
+                        if (j == poltronasExtras) {
+                            <div class="aisle3">@Convert.ToChar(i)</div> }
                     }
 
-                    if (j == 16)
-                    {
-                        <div class="aisle3">@Convert.ToChar(i)</div>
-                    }
-                    if (poltronas == capacidade) break;
+                    if (j == 16) {
+                        <div class="aisle3">@Convert.ToChar(i)</div> }
+
+                    if (poltronas == capacidade) 
+                        break;
                 }
-                if (poltronas == capacidade) break;
-                if (i == 64 + Math.Floor(filasInteiras / 2) || i == filasContagem - 1)
-                {
-                    <div class="aisle2"></div>
-                }
+
+                if (poltronas == capacidade) 
+                    break;
+
+                if (i == 64 + Math.Floor(filasInteiras / 2) || i == filasContagem - 1) {
+                    <div class="aisle2"></div> }
             }
 
-            @if (poltronasExtras % 2 != 0)
-            {
-                <div class="aisle3"></div>
-            }
+            @if (poltronasExtras % 2 != 0) {
+                <div class="aisle3"></div> }
 
             <input type="hidden" name="poltronasSelecionadas" id="poltronasSelecionadas" />
+            <input type="hidden" name="sessaoId" value="@sessao.Id" />
             <div id="error-message" class="error-message"></div>
         </div>
 
@@ -79,6 +80,7 @@
             <div class="occupied"><span></span>Ocupada</div>
         </div>
     </div>
+
     <div class="btn-centralizar">
         <div class="mt-3 d-grid gap-2 d-flex justify-content-center">
             <button type="submit" class="btn-padronizar btn btn-primary">
@@ -103,13 +105,15 @@
         else
         {
             <div class="card-placeholder">
-                <p><em>Imagem não disponível.</em></p>
+                <p><em>Imagem não disponível</em></p>
             </div>
         }
     </div>
+
     <div class="img-footer">
         <span class="fs-6 fw-semibold mb-0">@filme.Titulo</span>
     </div>
+
     <p>Poltronas: <span id="selected-count">0</span></p>
     <ul id="selected-seats"></ul>
 </div>

@@ -30,44 +30,44 @@
 
 <div class="row mt-3">
     <div class="col-lg-6">
-        <form class="d-grid gap-4" asp-action="Inserir" method="post" enctype="multipart/form-data">
-            <div class="mt-2">
-                <label class="control-label fw-semibold mt-2" asp-for="Titulo">Título do filme:</label>
-                <input class="form-control" asp-for="Titulo" />
-                <span class="text-danger my-3" asp-validation-for="Titulo">O título do filme é obrigatório</span>
+        <form id="filmeForm" class="needs-validation" asp-action="Inserir" method="post" enctype="multipart/form-data" novalidate>
+            <div class="mb-3">
+                <label for="Titulo" class="form-label">Título do filme:</label>
+                <input type="text" class="form-control" id="Titulo" asp-for="Titulo" required />
+                <div class="invalid-feedback">O título do filme é obrigatório.</div>
             </div>
 
-            <div class="mt-2">
-                <label class="control-label fw-semibold" asp-for="Duracao">Duração:</label>
-                <input type="text" class="form-control" asp-for="Duracao" id="duracao" />
-                <span class="text-danger my-3" asp-validation-for="Duracao">A duração do filme é obrigatória</span>
+            <div class="mb-3">
+                <label for="Duracao" class="form-label">Duração:</label>
+                <input type="text" class="form-control" id="Duracao" asp-for="Duracao" required />
+                <div class="invalid-feedback">A duração do filme é obrigatória.</div>
             </div>
 
-            <div class="mt-2">
-                <label class="control-label fw-semibold" asp-for="Genero">Gênero:</label>
-                <select class="form-select" asp-for="Genero">
-                    <option selected>Selecione um gênero</option>
+            <div class="mb-3">
+                <label for="Genero" class="form-label">Gênero:</label>
+                <select class="form-select" id="Genero" asp-for="Genero" required>
+                    <option value="" selected disabled>Selecione um gênero</option>
                     @foreach (var genero in generoFilme)
                     {
                         <option value="@genero">@genero</option>
                     }
                 </select>
-                <span class="text-danger my-3" asp-validation-for="Genero"></span>
+                <div class="invalid-feedback">O gênero do filme é obrigatório.</div>
             </div>
 
-            <div class="form-group">
-                <label class="control-label fw-semibold" asp-for="Poster">Pôster:</label>
-                <input type="file" class="form-control" asp-for="Poster" />
-                <span asp-validation-for="Poster" class="text-danger">O pôster do filme é obrigatório</span>
+            <div class="mb-3">
+                <label for="Poster" class="form-label">Pôster:</label>
+                <input type="file" class="form-control" id="Poster" asp-for="Poster" required />
+                <div class="invalid-feedback">O pôster do filme é obrigatório.</div>
             </div>
 
-            <div class="mt-2 d-grid gap-2 d-md-block">
-                <button type="submit" class="btn btn-primary px-5">
+            <div class="d-grid gap-2 d-md-block">
+                <button type="submit" class="btn btn-primary">
                     <i class="bi bi-floppy-fill me-1"></i>
                     Gravar
                 </button>
 
-                <a class="btn btn-secondary px-5" href="/filme/listar">
+                <a class="btn btn-secondary" href="/filme/listar">
                     <i class="bi bi-arrow-return-left me-1"></i>
                     Voltar
                 </a>
@@ -75,6 +75,27 @@
         </form>
     </div>
 </div>
+
+<script>
+    (function () {
+        'use strict'
+
+        // Busca todos os formulários que necessitam de validação personalizada
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Faz um loop sobre eles e evita o envio
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
 
 @section Scripts {
     <script>
