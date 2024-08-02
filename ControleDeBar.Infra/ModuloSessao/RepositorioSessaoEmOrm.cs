@@ -38,6 +38,6 @@ public class RepositorioSessaoEmOrm : IRepositorioSessao
     }
     #endregion
 
-    public List<Sessao> SelecionarTodos() => [.. dbContext.Sessoes];
+    public List<Sessao> SelecionarTodos() => dbContext.Sessoes.Include(s => s.Filme).Include(s => s.Sala).ToList();
     public Sessao SelecionarPorId(int id) => dbContext.Sessoes.Include(s => s.Filme).Include(s => s.Sala).FirstOrDefault(c => c.Id == id)!;
 }

@@ -85,7 +85,7 @@ namespace ControleDeCinema.WebApp.Controllers
 
             foreach (bool meia in ingressosTipos)
             {
-                var ingresso = new Ingresso(meia, poltronas[i], 0, sessao);
+                var ingresso = new Ingresso(meia, poltronas[i], sessao);
                 repositorioIngresso.Inserir(ingresso);
                 i++;
             }
@@ -96,116 +96,10 @@ namespace ControleDeCinema.WebApp.Controllers
             var mensagem = new MensagemViewModel()
             {
                 Mensagem = $"Os ingressos foram comprados com sucesso!",
-                LinkRedirecionamento = "/ingresso/listar"
+                LinkRedirecionamento = "/ingresso/selecionarFilme"
             };
 
             return View("mensagens", mensagem);
         }
-
-        /*
-                public ViewResult Vender() => View();
-                [HttpPost]
-                public ViewResult Vender(InserirIngressoViewModel inserirIngressoVm)
-                {
-                    if (!ModelState.IsValid) return View(inserirIngressoVm);
-
-                    var db = new ControleDeCinemaDbContext();
-                    var repositorioIngresso = new RepositorioIngressoEmOrm(db);
-
-                    var novoIngresso = new Ingresso(inserirIngressoVm.Titulo, inserirIngressoVm.Duracao, inserirIngressoVm.Genero);
-
-                    repositorioIngresso.Inserir(novoIngresso);
-
-                    HttpContext.Response.StatusCode = 201;
-
-                    var mensagem = new MensagemViewModel()
-                    {
-                        Mensagem = $"O filme: \"{novoIngresso}\" foi cadastrado com sucesso!",
-                        LinkRedirecionamento = "/filme/listar"
-                    };
-
-                    return View("mensagens", mensagem);
-                }
-
-
-                public ViewResult Editar(int id)
-                {
-                    var db = new ControleDeCinemaDbContext();
-                    var repositorioIngresso = new RepositorioIngressoEmOrm(db);
-
-                    var filme = repositorioIngresso.SelecionarPorId(id);
-
-                    var editarIngressoVm = new EditarIngressoViewModel
-                    {
-                        Id = id,
-                        Titulo = filme.Titulo,
-                        Duracao = filme.Duracao,
-                        Genero = filme.Genero
-                    };
-
-                    return View(editarIngressoVm);
-                }
-                [HttpPost]
-                public ViewResult Editar(EditarIngressoViewModel editarIngressoVm)
-                {
-                    if (!ModelState.IsValid) return View(editarIngressoVm);
-
-                    var db = new ControleDeCinemaDbContext();
-                    var repositorioIngresso = new RepositorioIngressoEmOrm(db);
-
-                    var filmeOriginal = repositorioIngresso.SelecionarPorId(editarIngressoVm.Id);
-
-                    filmeOriginal.Titulo = editarIngressoVm.Titulo;
-                    filmeOriginal.Duracao = editarIngressoVm.Duracao;
-                    filmeOriginal.Genero = editarIngressoVm.Genero;
-
-                    repositorioIngresso.Editar(filmeOriginal);
-
-                    var mensagem = new MensagemViewModel()
-                    {
-                        Mensagem = $"O filme: \"{filmeOriginal}\" foi editado com sucesso!",
-                        LinkRedirecionamento = "/filme/listar"
-                    };
-
-                    return View("mensagens", mensagem);
-                }
-
-
-                public ViewResult Excluir(int id)
-                {
-                    var db = new ControleDeCinemaDbContext();
-                    var repositorioIngresso = new RepositorioIngressoEmOrm(db);
-
-                    var filme = repositorioIngresso.SelecionarPorId(id);
-
-                    var excluirIngressoVm = new ExcluirIngressoViewModel
-                    {
-                        Id = id,
-                        Titulo = filme.Titulo,
-                        Duracao = filme.Duracao,
-                        Genero = filme.Genero
-                    };
-
-                    return View(excluirIngressoVm);
-                }
-                [HttpPost, ActionName("excluir")]
-                public ViewResult ExcluirConfirmado(ExcluirIngressoViewModel excluirIngressoVm)
-                {
-                    var db = new ControleDeCinemaDbContext();
-                    var repositorioIngresso = new RepositorioIngressoEmOrm(db);
-
-                    var filme = repositorioIngresso.SelecionarPorId(excluirIngressoVm.Id);
-
-                    repositorioIngresso.Excluir(filme);
-
-                    var mensagem = new MensagemViewModel()
-                    {
-                        Mensagem = $"O filme: \"{filme}\" foi excluído com sucesso!",
-                        LinkRedirecionamento = "/filme/listar"
-                    };
-
-                    return View("mensagens", mensagem);
-                }*/
-
     }
 }

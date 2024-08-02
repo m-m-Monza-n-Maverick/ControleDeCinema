@@ -74,10 +74,6 @@ namespace ControleDeCinema.Infra.Orm.Compartilhado
 					.IsRequired()
 					.HasColumnType("varchar(10)");
 
-                ingressoBuilder.Property(m => m.Valor)
-					.IsRequired()
-					.HasColumnType("decimal");
-
 				ingressoBuilder.HasOne(p => p.Sessao)
 					.WithMany()
 					.HasForeignKey("Sessao_Id")
