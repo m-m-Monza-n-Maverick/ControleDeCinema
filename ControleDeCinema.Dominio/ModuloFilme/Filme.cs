@@ -20,8 +20,8 @@ namespace ControleDeCinema.Dominio.ModuloFilme
             Titulo = titulo.ToTitleCase();
             Duracao = duracao;
             Genero = genero;
-            ImageData = ConvertImageToByteArray(image);
-            ImageContentType = image.ContentType;
+            ImageData = image != null ? ConvertImageToByteArray(image) : null!;
+            ImageContentType = image != null ? image.ContentType : null!;
         }
 
         private byte[] ConvertImageToByteArray(IFormFile image)
@@ -46,11 +46,19 @@ namespace ControleDeCinema.Dominio.ModuloFilme
         public override List<string> Validar()
         {
 	        List<string> erros = [];
-/*	        VerificaNulo(ref erros, Titulo, "Título");
-	        VerificaNulo(ref erros, Duracao, "Duração");
-*/
-	        return erros;
+			VerificaNulo(ref erros, Titulo, "Título");
+			VerificaNulo(ref erros, Duracao, "Duração");
+            VerificaNulo(ref erros, Genero, "Gênero");
+            VerificaNulo(ref erros, ImageData, "Pôster");
+
+            return erros;
         }
         public override string ToString() => Titulo;
-	}
+
+        protected void VerificaNulo(ref List<string> erros, byte[] campoTestado, string mostraCampo)
+        {
+            if (campoTestado is null)
+                erros.Add($"\nO campo \"{mostraCampo}\" é obrigatório. Tente novamente ");
+        }
+    }
 }
