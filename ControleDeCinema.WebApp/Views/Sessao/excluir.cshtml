@@ -1,5 +1,36 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ControleDeCinema.WebApp.Models.ExcluirSessaoViewModel
+
 @{
+	Layout = "_Layout";
+	ViewBag.Title = "Exclusão de Sessao";
 }
+
+<div class="row mt-3">
+	<div class="col-lg-6 d-grid gap-2">
+		<label class="fs-5"><strong>Sessao do Filme:</strong> @Model.Filme.Titulo</label>
+		<label class="fs-5"><strong>Sala:</strong> @Model.Sala</label>
+		<label class="fs-5"><strong>Horario:</strong> @Model.Horario</label>
+        
+		<label><strong>Id:</strong> [@Model.Id]</label>
+		<label><strong>Status:</strong> @Model.Encerrada</label>
+        
+		
+		<p class="text-bg-danger p-3 rounded fs-5 mt-2">
+			Deseja realmente confirmar a exclusão? Não será possível recuperar os dados excluídos posteriormente.
+		</p>
+
+		<form class="mt-2 d-grid gap-2 d-md-block" asp-action="excluir">
+			<button class="btn btn-danger px-5">
+				<i class="bi bi-trash-fill me-1"></i>
+				Excluir
+			</button>
+            
+			<a class="btn btn-secondary px-5" href="/sessao/listar">
+				<i class="bi bi-arrow-return-left me-1"></i>
+				Voltar
+			</a>
+
+		</form>
+	</div>
+</div>

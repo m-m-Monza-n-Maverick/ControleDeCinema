@@ -4,6 +4,7 @@ using ControleDeCinema.Infra.Orm.Compartilhado;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ControleDeCinema.Infra.Orm.Migrations
 {
     [DbContext(typeof(ControleDeCinemaDbContext))]
-    partial class ControleDeCinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240802190444_BancoDados")]
+    partial class BancoDados
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,6 +40,15 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(200)");
 
+                    b.Property<string>("ImageContentType")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("varchar(200)");
@@ -44,6 +56,34 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TBFilme", (string)null);
+                });
+
+            modelBuilder.Entity("ControleDeCinema.Dominio.ModuloIngresso.Ingresso", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Meia")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Poltrona")
+                        .IsRequired()
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<int>("Sessao_Id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Sessao_Id");
+
+                    b.ToTable("TBIngresso", (string)null);
                 });
 
             modelBuilder.Entity("ControleDeCinema.Dominio.ModuloSala.Sala", b =>
@@ -54,15 +94,12 @@ namespace ControleDeCinema.Infra.Orm.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("AcentosDisponiveis")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<decimal>("Capacidade")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sala");
+                    b.ToTable("TBSala", (string)null);
                 });
 
             modelBuilder.Entity("ControleDeCinema.Dominio.ModuloSessao.Sessao", b =>
@@ -76,39 +113,54 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                     b.Property<bool>("Encerrada")
                         .HasColumnType("bit");
 
-                    b.Property<int>("FilmeId")
+                    b.Property<int>("Filme_Id")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Horario")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("NumIngressos")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal");
 
-                    b.Property<int>("SalaId")
+                    b.Property<int>("Sala_Id")
                         .HasColumnType("int");
+
+                    b.Property<string>("poltronasOcupadas")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FilmeId");
+                    b.HasIndex("Filme_Id");
 
-                    b.HasIndex("SalaId");
+                    b.HasIndex("Sala_Id");
 
-                    b.ToTable("Sessoes");
+                    b.ToTable("TBSessao", (string)null);
+                });
+
+            modelBuilder.Entity("ControleDeCinema.Dominio.ModuloIngresso.Ingresso", b =>
+                {
+                    b.HasOne("ControleDeCinema.Dominio.ModuloSessao.Sessao", "Sessao")
+                        .WithMany()
+                        .HasForeignKey("Sessao_Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Sessao");
                 });
 
             modelBuilder.Entity("ControleDeCinema.Dominio.ModuloSessao.Sessao", b =>
                 {
                     b.HasOne("ControleDeCinema.Dominio.ModuloFilme.Filme", "Filme")
                         .WithMany()
-                        .HasForeignKey("FilmeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("Filme_Id")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ControleDeCinema.Dominio.ModuloSala.Sala", "Sala")
                         .WithMany()
-                        .HasForeignKey("SalaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("Sala_Id")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Filme");

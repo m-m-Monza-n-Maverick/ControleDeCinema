@@ -1,5 +1,6 @@
 ﻿using ControleDeCinema.Dominio.ModuloFilme;
 using ControleDeCinema.Dominio.ModuloSala;
+using ControleDeCinema.Dominio.ModuloSessao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 namespace ControleDeCinema.Infra.Orm.Compartilhado
@@ -7,6 +8,7 @@ namespace ControleDeCinema.Infra.Orm.Compartilhado
 	public class ControleDeCinemaDbContext : DbContext
 	{
 		public DbSet<Filme> Filmes { get; set; }
+		public DbSet<Sessao> Sessoes { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
