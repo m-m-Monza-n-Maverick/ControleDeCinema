@@ -11,4 +11,5 @@ public class RepositorioIngressoEmOrm(ControleDeCinemaDbContext dbContext)
 		dbContext.Ingressos.Add(registro);
 		dbContext.SaveChanges();
 	}
+    public Ingresso SelecionarPorId(int id) => dbContext.Ingressos.Include(i => i.Sessao).FirstOrDefault(i => i.Id == id)!;
 }
