@@ -4,8 +4,6 @@ namespace ControleDeCinema.Dominio.ModuloSala
     public class Sala() : EntidadeBase
     {
         public decimal Capacidade { get; set; }
-
-
         public Sala(decimal capacidade) : this() => Capacidade = capacidade;
 
         public override void Atualizar(EntidadeBase registroAtualizado)

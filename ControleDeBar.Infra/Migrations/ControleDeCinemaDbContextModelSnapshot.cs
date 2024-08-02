@@ -74,7 +74,7 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Valor")
-                        .HasColumnType("decimal");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 

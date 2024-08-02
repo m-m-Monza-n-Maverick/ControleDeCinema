@@ -2,6 +2,7 @@
 using ControleDeBar.Infra.Orm.ModuloIngresso;
 using ControleDeBar.Infra.Orm.ModuloSessao;
 using ControleDeBar.WebApp.Models;
+using ControleDeCinema.Dominio.ModuloFilme;
 using ControleDeCinema.Dominio.ModuloIngresso;
 using ControleDeCinema.Dominio.ModuloSala;
 using ControleDeCinema.Dominio.ModuloSessao;
@@ -14,7 +15,14 @@ namespace ControleDeCinema.WebApp.Controllers
 {
 	public class IngressoController : Controller
 	{
-		public ViewResult SelecionarFilme() 
+        static ControleDeCinemaDbContext db = new();
+
+        static Sala sala = new (78);
+        static Sala sala1 = new (30);
+        Sessao sessao = new (sala, DateTime.Now, null);
+        Sessao sessao1 = new (sala1, DateTime.Now, null);
+
+        public ViewResult SelecionarFilme() 
 		{ 
 			var db = new ControleDeCinemaDbContext();
 			var repositorioFilme = new RepositorioFilmeEmOrm(db);
@@ -32,11 +40,9 @@ namespace ControleDeCinema.WebApp.Controllers
             var repositorioSessao = new RepositorioSessaoEmOrm(db);
 
             var filme = repositorioFilme.SelecionarPorId(filmeSelecionadoId);
-            var sala = new Sala(78);
-            var sala1 = new Sala(30);
 
-            var sessao = new Sessao(sala, DateTime.Now, filme);
-            var sessao1 = new Sessao(sala1, DateTime.Now, filme);
+            sessao.Filme = filme;
+            sessao1.Filme = filme;
 
             repositorioSessao.Inserir(sessao);
             repositorioSessao.Inserir(sessao1);

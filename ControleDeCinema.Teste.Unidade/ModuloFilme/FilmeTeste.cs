@@ -1,6 +1,5 @@
 using ControleDeCinema.Dominio.ModuloFilme;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using System.Text;
 namespace ControleDeCinema.Testes.Unidade.ModuloFilme
 {

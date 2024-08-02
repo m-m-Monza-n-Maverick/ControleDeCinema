@@ -79,7 +79,7 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Meia = table.Column<bool>(type: "bit", nullable: false),
                     Poltrona = table.Column<string>(type: "varchar(10)", nullable: false),
-                    Valor = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
+                    Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Sessao_Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

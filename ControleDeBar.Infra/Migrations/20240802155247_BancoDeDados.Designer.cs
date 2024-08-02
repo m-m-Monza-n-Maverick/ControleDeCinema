@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ControleDeCinema.Infra.Orm.Migrations
 {
     [DbContext(typeof(ControleDeCinemaDbContext))]
-    [Migration("20240801202615_BancoDeDados")]
+    [Migration("20240802155247_BancoDeDados")]
     partial class BancoDeDados
     {
         /// <inheritdoc />
@@ -77,7 +77,7 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Valor")
-                        .HasColumnType("decimal");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 

@@ -1,7 +1,6 @@
 using ControleDeCinema.Dominio.ModuloFilme;
 using ControleDeCinema.Dominio.ModuloIngresso;
 using ControleDeCinema.Dominio.ModuloSessao;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Http;
 using System.Text;
 using ControleDeCinema.Dominio.ModuloSala;

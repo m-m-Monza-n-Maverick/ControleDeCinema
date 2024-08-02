@@ -16,8 +16,4 @@
 		<ProjectReference Include="..\ControleDeCinema.Dominio\ControleDeCinema.Dominio.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="ModuloSala\" />
-	</ItemGroup>
-
 </Project>
