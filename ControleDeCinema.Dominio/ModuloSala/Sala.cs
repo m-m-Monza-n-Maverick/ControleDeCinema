@@ -15,9 +15,8 @@ namespace ControleDeCinema.Dominio.ModuloSala
 		public override List<string> Validar()
 		{
 			List<string> erros = [];
-			/*	        VerificaNulo(ref erros, Titulo, "Título");
-						VerificaNulo(ref erros, Duracao, "Duração");
-			*/
+
+			VerificaNulo(ref erros, Capacidade, "Capacidade");
 			return erros;
 		}
 		public override string ToString() => $"Sala {Id}";
