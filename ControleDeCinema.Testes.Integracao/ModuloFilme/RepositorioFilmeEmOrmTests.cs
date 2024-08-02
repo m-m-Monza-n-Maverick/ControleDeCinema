@@ -4,7 +4,6 @@ using ControleDeCinema.Infra.Orm.Compartilhado;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using System.Text;
-
 namespace ControleDeCinema.Testes.Integracao.ModuloFilme
 {
     [TestClass]
