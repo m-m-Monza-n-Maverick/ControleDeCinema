@@ -12,19 +12,6 @@ namespace ControleDeCinema.Infra.Orm.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Sala",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Capacidade = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Sala", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TBFilme",
                 columns: table => new
                 {
@@ -39,6 +26,19 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TBFilme", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TBSala",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Capacidade = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TBSala", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,15 +58,15 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                 {
                     table.PrimaryKey("PK_TBSessao", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TBSessao_Sala_Sala_Id",
-                        column: x => x.Sala_Id,
-                        principalTable: "Sala",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_TBSessao_TBFilme_Filme_Id",
                         column: x => x.Filme_Id,
                         principalTable: "TBFilme",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_TBSessao_TBSala_Sala_Id",
+                        column: x => x.Sala_Id,
+                        principalTable: "TBSala",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -119,10 +119,10 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                 name: "TBSessao");
 
             migrationBuilder.DropTable(
-                name: "Sala");
+                name: "TBFilme");
 
             migrationBuilder.DropTable(
-                name: "TBFilme");
+                name: "TBSala");
         }
     }
 }

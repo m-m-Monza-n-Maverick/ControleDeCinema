@@ -96,7 +96,7 @@ namespace ControleDeCinema.Infra.Orm.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sala");
+                    b.ToTable("TBSala", (string)null);
                 });
 
             modelBuilder.Entity("ControleDeCinema.Dominio.ModuloSessao.Sessao", b =>

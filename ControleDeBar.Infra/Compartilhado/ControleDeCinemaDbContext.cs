@@ -66,15 +66,15 @@ namespace ControleDeCinema.Infra.Orm.Compartilhado
                     .IsRequired()
                     .ValueGeneratedOnAdd();
 
-                ingressoBuilder.Property(m => m.Meia)
+                ingressoBuilder.Property(i => i.Meia)
                     .IsRequired()
                     .HasColumnType("bit");
 
-                ingressoBuilder.Property(m => m.Poltrona)
+                ingressoBuilder.Property(i => i.Poltrona)
                     .IsRequired()
                     .HasColumnType("varchar(10)");
 
-                ingressoBuilder.HasOne(p => p.Sessao)
+                ingressoBuilder.HasOne(i => i.Sessao)
                     .WithMany()
                     .HasForeignKey("Sessao_Id")
                     .IsRequired()
@@ -122,7 +122,13 @@ namespace ControleDeCinema.Infra.Orm.Compartilhado
 
             modelBuilder.Entity<Sala>(salaBuilder =>
             {
-                salaBuilder.Property(s => s.Capacidade)
+				salaBuilder.ToTable("TBSala");
+
+				salaBuilder.Property(s => s.Id)
+					.IsRequired()
+					.ValueGeneratedOnAdd();
+
+				salaBuilder.Property(s => s.Capacidade)
                     .IsRequired()
                     .HasColumnType("decimal");
             });

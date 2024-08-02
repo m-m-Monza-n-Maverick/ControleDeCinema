@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ControleDeCinema.Infra.Orm.Migrations
 {
     [DbContext(typeof(ControleDeCinemaDbContext))]
-    [Migration("20240802155247_BancoDeDados")]
+    [Migration("20240802165613_BancoDeDados")]
     partial class BancoDeDados
     {
         /// <inheritdoc />
@@ -99,7 +99,7 @@ namespace ControleDeCinema.Infra.Orm.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sala");
+                    b.ToTable("TBSala", (string)null);
                 });
 
             modelBuilder.Entity("ControleDeCinema.Dominio.ModuloSessao.Sessao", b =>
