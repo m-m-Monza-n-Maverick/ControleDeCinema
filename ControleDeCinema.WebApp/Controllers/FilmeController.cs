@@ -23,7 +23,7 @@ namespace ControleDeCinema.WebApp.Controllers
 						Titulo = f.Titulo,
 						Duracao = f.Duracao,
 						Genero = f.Genero
-					});
+                    });
 
 			return View(listarFilmesVm);
 		}
@@ -39,7 +39,9 @@ namespace ControleDeCinema.WebApp.Controllers
 				Id = id,
 				Titulo = filme.Titulo,
 				Duracao = filme.Duracao,
-				Genero = filme.Genero
+				Genero = filme.Genero,
+				ImageData = filme.ImageData,
+				ImageContentType = filme.ImageContentType
 			};
 
 			return View(detalhesFilmeVm);
@@ -55,7 +57,7 @@ namespace ControleDeCinema.WebApp.Controllers
 			var db = new ControleDeCinemaDbContext();
 			var repositorioFilme = new RepositorioFilmeEmOrm(db);
 
-			var novoFilme = new Filme(inserirFilmeVm.Titulo, inserirFilmeVm.Duracao, inserirFilmeVm.Genero);
+			var novoFilme = new Filme(inserirFilmeVm.Titulo, inserirFilmeVm.Duracao, inserirFilmeVm.Genero, inserirFilmeVm.Poster);
 
 			repositorioFilme.Inserir(novoFilme);
 
@@ -83,7 +85,9 @@ namespace ControleDeCinema.WebApp.Controllers
 				Id = id,
 				Titulo = filme.Titulo,
 				Duracao = filme.Duracao,
-				Genero = filme.Genero
+				Genero = filme.Genero,
+				ImageData = filme.ImageData,
+				ImageContentType = filme.ImageContentType,
 			};
 
 			return View(editarFilmeVm);
@@ -149,5 +153,5 @@ namespace ControleDeCinema.WebApp.Controllers
 
 			return View("mensagens", mensagem);
 		}
-	}
+    }
 }

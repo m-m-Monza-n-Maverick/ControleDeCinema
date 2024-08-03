@@ -1,5 +1,54 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ControleDeCinema.WebApp.Models.EditarSalaViewModel;
+
 @{
+	Layout = "_Layout";
+	ViewBag.Title = "Edição de Sala";
 }
+
+<div class="row mt-3">
+	<div class="col-lg-6">
+		<form class="needs-validation d-grid gap-4" asp-action="Editar" enctype="multipart/form-data" novalidate>
+
+			<div class="mt-2">
+				<label class="control-label fw-semibold">Capacidade da Sala:</label>
+				<input type="number" class="form-control" asp-for="Capacidade" required/>
+				<div class="invalid-feedback">A capacidade da sala é obrigatória.</div>
+			</div>
+
+			<div class="mt-2 d-grid gap-2 d-md-block">
+				<button class="btn btn-primary px-5">
+					<i class="bi bi-floppy-fill me-1"></i>
+					Gravar
+				</button>
+
+				<a class="btn btn-secondary px-5" href="/sala/listar">
+					<i class="bi bi-arrow-return-left me-1"></i>
+					Voltar
+				</a>
+			</div>
+
+		</form>
+
+	</div>
+</div>
+
+<script>
+	(function () {
+		'use strict'
+
+		// Busca todos os formulários que necessitam de validação personalizada
+		var forms = document.querySelectorAll('.needs-validation')
+
+		// Faz um loop sobre eles e evita o envio
+		Array.prototype.slice.call(forms).forEach(function (form) {
+			form.addEventListener('submit', function (event) {
+				if (!form.checkValidity()) {
+					event.preventDefault()
+					event.stopPropagation()
+				}
+
+				form.classList.add('was-validated')
+			}, false)
+		})
+	})()
+</script>
