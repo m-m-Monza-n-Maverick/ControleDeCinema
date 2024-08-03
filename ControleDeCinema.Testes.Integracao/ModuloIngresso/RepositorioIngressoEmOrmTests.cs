@@ -38,7 +38,7 @@ namespace ControleDeCinema.Testes.Integracao.ModuloIngresso
                 ContentType = "text/plain"
             };
 
-            Filme filme = new("Oi", TimeSpan.MinValue, "Ação", imagem);
+            Filme filme = new("Oi", new TimeSpan(0, 0, 30), "Ação", imagem);
             Sala sala = new(78);
             Sessao sessao = new(sala, DateTime.Now, filme);
 

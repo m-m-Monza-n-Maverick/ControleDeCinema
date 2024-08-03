@@ -16,12 +16,6 @@ namespace ControleDeCinema.WebApp.Controllers
 	public class IngressoController : Controller
 	{
         static ControleDeCinemaDbContext db = new();
-
-        static Sala sala = new (78);
-        static Sala sala1 = new (30);
-        Sessao sessao = new (sala, DateTime.Now, null);
-        Sessao sessao1 = new (sala1, DateTime.Now, null);
-
         public ViewResult SelecionarFilme() 
 		{ 
 			var db = new ControleDeCinemaDbContext();
@@ -41,7 +35,13 @@ namespace ControleDeCinema.WebApp.Controllers
 
             var filme = repositorioFilme.SelecionarPorId(filmeSelecionadoId);
 
-            sessao.Filme = filme;
+            Sala sala = new(10);
+            Sala sala1 = new(50);
+
+			Sessao sessao = new(sala, DateTime.Now, null);
+			Sessao sessao1 = new(sala1, DateTime.Now, null);
+
+			sessao.Filme = filme;
             sessao1.Filme = filme;
 
             repositorioSessao.Inserir(sessao);

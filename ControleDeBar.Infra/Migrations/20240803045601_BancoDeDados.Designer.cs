@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ControleDeCinema.Infra.Orm.Migrations
 {
     [DbContext(typeof(ControleDeCinemaDbContext))]
-    [Migration("20240802165613_BancoDeDados")]
+    [Migration("20240803045601_BancoDeDados")]
     partial class BancoDeDados
     {
         /// <inheritdoc />

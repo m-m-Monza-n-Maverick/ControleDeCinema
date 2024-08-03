@@ -35,7 +35,7 @@ namespace ControleDeCinema.Testes.Integracao.ModuloFilme
                 ContentType = "text/plain"
             };
 
-            Filme novoFilme = new("Oi", TimeSpan.MinValue, "Ação", imagem);
+            Filme novoFilme = new("Oi", new TimeSpan(0, 0, 30), "Ação", imagem);
 
             // act
             repositorioFilme.Inserir(novoFilme);
@@ -59,7 +59,7 @@ namespace ControleDeCinema.Testes.Integracao.ModuloFilme
                 ContentType = "text/plain"
             };
 
-            Filme filmeOriginal = new("Oi", TimeSpan.MinValue, "Ação", imagem);
+            Filme filmeOriginal = new("Oi", new TimeSpan(0,0,30), "Ação", imagem);
 
             repositorioFilme.Inserir(filmeOriginal);
 
@@ -87,7 +87,7 @@ namespace ControleDeCinema.Testes.Integracao.ModuloFilme
                 ContentType = "text/plain"
             };
 
-            Filme filme = new("Oi", TimeSpan.MinValue, "Ação", imagem);
+            Filme filme = new("Oi", new TimeSpan(0, 0, 30), "Ação", imagem);
 
             repositorioFilme.Inserir(filme);
 
@@ -115,9 +115,9 @@ namespace ControleDeCinema.Testes.Integracao.ModuloFilme
 
             List<Filme> filmesParaInserir =
             [
-                new("Oi", TimeSpan.MinValue, "Ação", imagem),
-                new("Tchau", TimeSpan.MinValue, "Ação", imagem),
-                new("Tudo bem?", TimeSpan.MinValue, "Ação", imagem)
+                new("Oi", new TimeSpan(0,0,30), "Ação", imagem),
+                new("Tchau", new TimeSpan(0,0,30), "Ação", imagem),
+                new("Tudo bem?", new TimeSpan(0,0,30), "Ação", imagem)
             ];
 
             foreach (Filme filme in filmesParaInserir)
