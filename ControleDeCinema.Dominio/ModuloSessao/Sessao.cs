@@ -29,7 +29,6 @@ namespace ControleDeCinema.Dominio.ModuloSessao
         }
         public List<string> poltronasOcupadas { get; set; }
 
-
         public Sessao(Sala sala, DateTime horario, Filme filme) : this ()
         {
             Sala = sala;
@@ -49,10 +48,11 @@ namespace ControleDeCinema.Dominio.ModuloSessao
         public override List<string> Validar()
         {
 	        List<string> erros = [];
-	        /*	        VerificaNulo(ref erros, Titulo, "Título");
-				        VerificaNulo(ref erros, Duracao, "Duração");
-	        */
-	        return erros;
+            VerificaNulo(ref erros, Sala, "Sala");
+			VerificaNulo(ref erros, Horario, "Horário");
+			VerificaNulo(ref erros, Filme, "Filme");
+
+            return erros;
         }
         public override string ToString() => $"Sessão às {Horario.ToShortTimeString()} para o filme \"{Filme}\"";
 	}
