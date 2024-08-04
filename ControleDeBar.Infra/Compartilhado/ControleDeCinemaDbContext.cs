@@ -3,6 +3,7 @@ using ControleDeCinema.Dominio.ModuloIngresso;
 using ControleDeCinema.Dominio.ModuloSala;
 using ControleDeCinema.Dominio.ModuloSessao;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 namespace ControleDeCinema.Infra.Orm.Compartilhado
 {
@@ -58,28 +59,18 @@ namespace ControleDeCinema.Infra.Orm.Compartilhado
                     .HasColumnType("nvarchar(255)");
             });
 
-            modelBuilder.Entity<Ingresso>(ingressoBuilder =>
-            {
-                ingressoBuilder.ToTable("TBIngresso");
+			modelBuilder.Entity<Sala>(salaBuilder =>
+			{
+				salaBuilder.ToTable("TBSala");
 
-                ingressoBuilder.Property(i => i.Id)
-                    .IsRequired()
-                    .ValueGeneratedOnAdd();
+				salaBuilder.Property(s => s.Id)
+					.IsRequired()
+					.ValueGeneratedOnAdd();
 
-                ingressoBuilder.Property(i => i.Meia)
-                    .IsRequired()
-                    .HasColumnType("bit");
-
-                ingressoBuilder.Property(i => i.Poltrona)
-                    .IsRequired()
-                    .HasColumnType("varchar(10)");
-
-                ingressoBuilder.HasOne(i => i.Sessao)
-                    .WithMany()
-                    .HasForeignKey("Sessao_Id")
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
+				salaBuilder.Property(s => s.Capacidade)
+					.IsRequired()
+					.HasColumnType("decimal");
+			});
 
             modelBuilder.Entity<Sessao>(sessaoBuilder =>
             {
@@ -93,7 +84,7 @@ namespace ControleDeCinema.Infra.Orm.Compartilhado
                     .IsRequired()
                     .HasColumnType("datetime2");
 
-                sessaoBuilder.Property(s => s.NumIngressos)
+                sessaoBuilder.Property(s => s.NumIngressosDisponiveis)
                     .IsRequired()
                     .HasColumnType("decimal");
 
@@ -101,13 +92,18 @@ namespace ControleDeCinema.Infra.Orm.Compartilhado
                     .IsRequired()
                     .HasColumnType("bit");
 
-                sessaoBuilder.Property(s => s.poltronasOcupadas)
-                  .HasConversion(
-                      v => string.Join(',', v),
-                      v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList())
-                  .HasColumnType("nvarchar(max)");
+				sessaoBuilder.Property(s => s.poltronasOcupadas)
+	                .HasConversion(
+		                v => string.Join(',', v), // Converter de List<string> para string
+		                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList() // Converter de string para List<string>
+	                )
+	                .HasColumnType("nvarchar(max)")
+	                .Metadata.SetValueComparer(new ValueComparer<List<string>>(
+		                (c1, c2) => c1.SequenceEqual(c2), // Método de igualdade
+		                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())), // Método de hash code
+		                c => c.ToList())); // Método de cópia profunda
 
-                sessaoBuilder.HasOne(s => s.Sala)
+				sessaoBuilder.HasOne(s => s.Sala)
                     .WithMany()
                     .HasForeignKey("Sala_Id")
                     .IsRequired()
@@ -120,18 +116,28 @@ namespace ControleDeCinema.Infra.Orm.Compartilhado
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<Sala>(salaBuilder =>
-            {
-				salaBuilder.ToTable("TBSala");
+			modelBuilder.Entity<Ingresso>(ingressoBuilder =>
+			{
+				ingressoBuilder.ToTable("TBIngresso");
 
-				salaBuilder.Property(s => s.Id)
+				ingressoBuilder.Property(i => i.Id)
 					.IsRequired()
 					.ValueGeneratedOnAdd();
 
-				salaBuilder.Property(s => s.Capacidade)
-                    .IsRequired()
-                    .HasColumnType("decimal");
-            });
-        }
-    }
+				ingressoBuilder.Property(i => i.Meia)
+					.IsRequired()
+					.HasColumnType("bit");
+
+				ingressoBuilder.Property(i => i.Poltrona)
+					.IsRequired()
+					.HasColumnType("varchar(10)");
+
+				ingressoBuilder.HasOne(i => i.Sessao)
+					.WithMany()
+					.HasForeignKey("Sessao_Id")
+					.IsRequired()
+					.OnDelete(DeleteBehavior.Restrict);
+			});
+		}
+	}
 }

@@ -1,6 +1,8 @@
 ﻿using ControleDeBar.Infra.Orm.ModuloSala;
+using ControleDeBar.Infra.Orm.ModuloSessao;
 using ControleDeBar.WebApp.Models;
 using ControleDeCinema.Dominio.ModuloSala;
+using ControleDeCinema.Dominio.ModuloSessao;
 using ControleDeCinema.Infra.Orm.Compartilhado;
 using ControleDeCinema.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +14,12 @@ namespace ControleDeCinema.WebApp.Controllers
         {
             var db = new ControleDeCinemaDbContext();
             var repositorioSala = new RepositorioSalaEmOrm(db);
+			var repositorioSessao = new RepositorioSessaoEmOrm(db);
 
-            var salas = repositorioSala.SelecionarTodos();
+			var salas = repositorioSala.SelecionarTodos();
+			ViewBag.Sessoes = repositorioSessao.SelecionarTodos();
 
-            var listarSalasVm = salas // mapeamento
+			var listarSalasVm = salas // mapeamento
                 .Select(s =>
                     new ListarSalaViewModel
                     {

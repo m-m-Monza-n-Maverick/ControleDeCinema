@@ -1,5 +1,6 @@
 ﻿using ControleDeBar.Infra.Orm.ModuloFilme;
 using ControleDeBar.Infra.Orm.ModuloIngresso;
+using ControleDeBar.Infra.Orm.ModuloSala;
 using ControleDeBar.Infra.Orm.ModuloSessao;
 using ControleDeBar.WebApp.Models;
 using ControleDeCinema.Dominio.ModuloFilme;
@@ -9,19 +10,23 @@ using ControleDeCinema.Dominio.ModuloSessao;
 using ControleDeCinema.Infra.Orm.Compartilhado;
 using ControleDeCinema.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 namespace ControleDeCinema.WebApp.Controllers
 {
 	public class IngressoController : Controller
 	{
-        static ControleDeCinemaDbContext db = new();
         public ViewResult SelecionarFilme() 
 		{ 
 			var db = new ControleDeCinemaDbContext();
-			var repositorioFilme = new RepositorioFilmeEmOrm(db);
+			var repositorioSessao = new RepositorioSessaoEmOrm(db);
 
-			ViewBag.Filmes = repositorioFilme.SelecionarTodos();
+            List<Filme> filmes = [];
+
+            foreach(Sessao sessao in repositorioSessao.SelecionarTodos())
+                if(!sessao.Encerrada)
+                    filmes.Add(sessao.Filme);
+
+            ViewBag.Filmes = filmes.Distinct().ToList();
 
 			return View();
 		}
@@ -32,22 +37,11 @@ namespace ControleDeCinema.WebApp.Controllers
             var db = new ControleDeCinemaDbContext();
             var repositorioFilme = new RepositorioFilmeEmOrm(db);
             var repositorioSessao = new RepositorioSessaoEmOrm(db);
+			var repositorioSala = new RepositorioSalaEmOrm(db);
 
-            var filme = repositorioFilme.SelecionarPorId(filmeSelecionadoId);
+			var filme = repositorioFilme.SelecionarPorId(filmeSelecionadoId);
 
-            Sala sala = new(10);
-            Sala sala1 = new(50);
-
-			Sessao sessao = new(sala, DateTime.Now, null);
-			Sessao sessao1 = new(sala1, DateTime.Now, null);
-
-			sessao.Filme = filme;
-            sessao1.Filme = filme;
-
-            repositorioSessao.Inserir(sessao);
-            repositorioSessao.Inserir(sessao1);
-
-            ViewBag.Sessoes = repositorioSessao.SelecionarTodos().FindAll(s => s.Filme == filme);
+            ViewBag.Sessoes = repositorioSessao.SelecionarTodos().FindAll(s => s.Filme == filme && !s.Encerrada);
 
             return View();
         }

@@ -8,8 +8,25 @@ namespace ControleDeCinema.Dominio.ModuloSessao
         public Sala Sala { get; set; }
         public DateTime Horario { get; set; }
         public Filme Filme { get; set; }
-        public decimal NumIngressos { get; set; }//{ get => Sala.AcentosDisponiveis; set{} }
-        public bool Encerrada { get; set; }
+        public decimal NumIngressosDisponiveis 
+        {
+            get
+            {
+                if (Sala is null) return 0;
+                return Sala.Capacidade - poltronasOcupadas.Count;
+            } 
+            private set { } 
+        }
+        public bool Encerrada 
+        { 
+            get 
+            {
+                if (Filme is null) return false;
+                if (DateTime.Now > Horario + Filme.Duracao) return true;
+                return false;
+            }
+            private set { }
+        }
         public List<string> poltronasOcupadas { get; set; }
 
 

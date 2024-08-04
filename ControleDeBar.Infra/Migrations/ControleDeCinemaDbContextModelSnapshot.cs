@@ -73,9 +73,6 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                     b.Property<int>("Sessao_Id")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Valor")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Sessao_Id");
@@ -116,7 +113,7 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                     b.Property<DateTime>("Horario")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("NumIngressos")
+                    b.Property<decimal>("NumIngressosDisponiveis")
                         .HasColumnType("decimal");
 
                     b.Property<int>("Sala_Id")

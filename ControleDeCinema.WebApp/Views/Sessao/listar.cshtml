@@ -1,5 +1,104 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<ControleDeCinema.WebApp.Models.ListarSessaoViewModel>
+
 @{
+	Layout = "_Layout";
+	ViewBag.Title = "Lista de Sessões";
 }
+
+@if (Model.Count() == 0)
+{
+	<label class="control-label fw-semibold mt-1 mx-1">Ainda não existem sessões cadastradas :(</label>
+}
+
+<div class="mt-3">
+	<a class="btn btn-primary px-4" href="/sessao/inserir">
+		<i class="bi bi-plus-circle"></i>
+		Inserir nova sessão
+	</a>
+</div>
+
+<div class="row gap-3 mt-3 p-2">
+	@foreach (var sessao in Model)
+	{
+		@if (sessao.Encerrada)
+		{
+			<div class="card col-md-5 col-lg-5 col-xl-4 border-danger">
+				<div class="card-body text-danger">
+					<div class="row row-cols-2">
+						<label class="card-title fs-5 fw-semibold">Filme: @sessao.Filme</label>
+						<div class="text-end">
+							<a class="btn btn-secondary btn-sm" href="/sessao/detalhes/@sessao.Id">
+								<i class="bi bi-search"></i>
+							</a>
+
+							<a class="btn btn-primary btn-sm disabled" href="/sessao/editar/@sessao.Id">
+								<i class="bi bi-pencil-square"></i>
+							</a>
+
+							<a class="btn btn-danger btn-sm disabled" href="/sessao/excluir/@sessao.Id">
+								<i class="bi bi-trash3"></i>
+							</a>
+						</div>
+					</div>
+					<p class="card-subtitle fs-6"><strong>Horário:</strong> @sessao.Horario.ToShortTimeString()</p>
+					<div class="row row-cols-2">
+						<p class="card-subtitle fs-6"><strong>Id:</strong> [@sessao.Id]</p>
+						<p class="card-subtitle text-end" style="font-size: 12px"><strong>[ENCERRADA]</strong></p>
+					</div>
+				</div>
+			</div>
+		}
+		else
+		{
+			<div class="card col-md-5 col-lg-5 col-xl-4 border-secondary">
+				<div class="card-body">
+					<div class="row row-cols-2">
+						<label class="card-title fs-5 fw-semibold">Filme: @sessao.Filme</label>
+						<div class="text-end">
+							<a class="btn btn-secondary btn-sm" href="/sessao/detalhes/@sessao.Id">
+								<i class="bi bi-search"></i>
+							</a>
+
+							@if(sessao.NumIngressosDisponiveis != sessao.Sala.Capacidade)
+							{
+								<a class="btn btn-primary btn-sm disabled" href="/sessao/editar/@sessao.Id">
+									<i class="bi bi-pencil-square"></i>
+								</a>
+
+								<a class="btn btn-danger btn-sm disabled" href="/sessao/excluir/@sessao.Id">
+									<i class="bi bi-trash3"></i>
+								</a>
+							}
+							else
+							{
+								<a class="btn btn-primary btn-sm" href="/sessao/editar/@sessao.Id">
+									<i class="bi bi-pencil-square"></i>
+								</a>
+
+								<a class="btn btn-danger btn-sm" href="/sessao/excluir/@sessao.Id">
+									<i class="bi bi-trash3"></i>
+								</a>
+							}
+
+							@*<div class="d-block mt-1">
+								<a class="btn btn-light btn-sm border-secondary" href="">
+									vender sessão
+								</a>
+							</div>*@
+						</div>
+					</div>
+
+					<p class="card-subtitle fs-6"><strong>Horário:</strong> @sessao.Horario.ToShortTimeString()</p>
+					<div class="row row-cols-2">
+						<p class="card-subtitle fs-6"><strong>Id:</strong> [@sessao.Id]</p>
+						@if (sessao.NumIngressosDisponiveis == 0)
+						{
+							<p class="card-subtitle text-end" style="font-size: 12px"><strong>[ESGOTADA]</strong></p>
+						}
+					</div>
+				</div>
+			</div>
+		}
+	}
+</div>
+

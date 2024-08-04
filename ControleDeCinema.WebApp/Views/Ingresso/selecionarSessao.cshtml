@@ -35,9 +35,19 @@
                 <label class="control-label fw-semibold mt-2">Selecione a sessão:</label>
 
                 @foreach (var sessao in sessoes) {
-                    <button type="button" class="btn btn-outline-secondary btn-block sessao-button" data-sessao-id="@sessao.Id">
-                        Sala: @*sessao.Sala.Id*@ - Horário: @sessao.Horario.ToShortTimeString() 
-                    </button> 
+                    if (sessao.NumIngressosDisponiveis == 0)
+                    {
+                        <button type="button" class="btn btn-outline-secondaty btn-block sessao-button" disabled>
+                            <span class="fw-bold" style="font-size:13px">[ESGOTADA]</span>
+                            Sala: @sessao.Sala.Id - Horário: @sessao.Horario.ToShortTimeString()
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-outline-secondary btn-block sessao-button" data-sessao-id="@sessao.Id">
+                            Sala: @sessao.Sala.Id - Horário: @sessao.Horario.ToShortTimeString()
+                        </button>
+                    }
                 }
 
                 <input type="hidden" name="SessaoSelecionadaId" id="SessaoSelecionadaId" />

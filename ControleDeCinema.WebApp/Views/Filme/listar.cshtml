@@ -1,8 +1,11 @@
-﻿@model IEnumerable<ControleDeCinema.WebApp.Models.ListarFilmeViewModel>
+﻿@using ControleDeCinema.Dominio.ModuloSessao
+@model IEnumerable<ControleDeCinema.WebApp.Models.ListarFilmeViewModel>
 
 @{
 	Layout = "_Layout";
 	ViewBag.Title = "Lista de Filmes";
+
+	var sessoes = ViewBag.Sessoes;
 }
 
 @if (Model.Count() == 0)
@@ -37,9 +40,30 @@
 							<i class="bi bi-pencil-square"></i>
 						</a>
 
-						<a class="btn btn-danger btn-sm" href="/filme/excluir/@filme.Id">
-							<i class="bi bi-trash3"></i>
-						</a>
+						@{
+							var ocupado = false;
+						}
+
+						@foreach (Sessao sessao in sessoes)
+						{
+							@if (sessao.Filme.Id == filme.Id)
+							{ ocupado = true; }
+
+						}
+
+						@if (ocupado)
+						{
+							<a class="btn btn-danger btn-sm disabled" href="/filme/excluir/@filme.Id">
+								<i class="bi bi-trash3"></i>
+							</a>
+						}
+						else
+						{
+							<a class="btn btn-danger btn-sm" href="/filme/excluir/@filme.Id">
+								<i class="bi bi-trash3"></i>
+							</a>
+						}
+
 					</div>
 				</div>
 

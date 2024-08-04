@@ -1,5 +1,44 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ControleDeCinema.WebApp.Models.DetalhesSessaoViewModel
+
 @{
+    Layout = "_Layout";
+    ViewBag.Title = "Detalhes da Sessão";
+
+    var filme = Model.Filme;
 }
+
+<style>
+    .img-fluid {
+        width: 160px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-3">
+        <div class="d-grid">
+            <label class="fs-5"><strong>Sessão</strong></label>
+            <label><strong>Id:</strong> [@Model.Id]</label>
+
+            @if (filme.ImageData != null && filme.ImageData.Length > 0)
+            {
+                var base64Image = Convert.ToBase64String(filme.ImageData);
+                var imageSrc = $"data:{filme.ImageContentType};base64,{base64Image}";
+
+                <img src="@imageSrc" alt="Pôster do Filme" class="img-fluid mt-3" />
+            }
+            else
+            {
+                <p><em>Imagem não disponível.</em></p>
+            }
+
+            <label><strong>Filme:</strong> @Model.Filme</label>
+            <label><strong>Sala:</strong> @Model.Sala</label>
+            <label><strong>Horário:</strong> @Model.Horario.ToShortTimeString()</label>
+        </div>
+
+        <a href="/sessao/listar" class="btn btn-secondary px-5 mt-4">
+            <i class="bi bi-arrow-return-left me-1"></i>
+            Voltar
+        </a>
+    </div>
+</div>
