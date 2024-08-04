@@ -4,7 +4,29 @@ namespace ControleDeCinema.Dominio.ModuloSala
     public class Sala() : EntidadeBase
     {
         public decimal Capacidade { get; set; }
-        public Sala(decimal capacidade) : this() => Capacidade = capacidade;
+        public List<DateTime> HorariosOcupados { get; set; }
+		public bool Ocupada
+		{
+			get 
+			{
+				if (HorariosOcupados.Count != 0)
+				{
+					if (DateTime.Now >= HorariosOcupados[0] && DateTime.Now <= HorariosOcupados[1]) return true;
+
+					if (DateTime.Now > HorariosOcupados[1])
+						HorariosOcupados.Clear();
+				}
+
+				return false;
+			}			
+			private set { }		
+		}
+
+		public Sala(decimal capacidade) : this()
+		{
+			Capacidade = capacidade;
+			HorariosOcupados = [];
+		}
 
         public override void Atualizar(EntidadeBase registroAtualizado)
         {

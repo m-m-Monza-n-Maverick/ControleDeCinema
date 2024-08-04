@@ -1,4 +1,5 @@
-﻿@model ControleDeCinema.WebApp.Models.InserirSessaoViewModel
+﻿@using Newtonsoft.Json
+@model ControleDeCinema.WebApp.Models.InserirSessaoViewModel
 
 @{
     Layout = "_Layout";
@@ -25,13 +26,13 @@
 
             <div class="mb-3">
                 <label for="Horario" class="form-label">Horário da sessão:</label>
-                <input type="text" class="form-control" id="horario" asp-for="Horario" required />
-                <div class="invalid-feedback">O horário é obrigatório.</div>
+                <input type="time" class="form-control" id="horario" asp-for="Horario" required />
+                <div class="invalid-feedback">O horário é obrigatório e deve estar no formato hh:mm</div>
             </div>
 
             <div class="mb-3">
                 <label for="Sala" class="form-label">Sala:</label>
-                <select class="form-select" id="Sala" asp-for="SalaId" required>
+                <select class="form-select" id="Sala" asp-for="SalaId" disabled required>
                     <option value="" selected disabled>Selecione uma sala</option>
                     @foreach (var sala in salas)
                     {
@@ -74,13 +75,69 @@
                 form.classList.add('was-validated')
             }, false)
         })
-    })()
-</script>
+    })();
 
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $("#horario").mask("00:00", { reverse: true });
-        });
-    </script>
-}
+    
+    // Validação do horário e habilitação da sala
+    document.addEventListener('DOMContentLoaded', function () {
+        var horarioInput = document.getElementById('horario');
+        var salaSelect = document.getElementById('Sala');
+
+        function validarHorario() {
+            var horario = horarioInput.value;
+
+            if (!horario) {
+                salaSelect.disabled = true;
+                return;
+            }
+            else
+                salaSelect.disabled = false;
+        }
+
+          @* var regex = /^(?:[01]\d|2[0-3]):[0-5]\d$/; // Validação para formato HH:MM
+
+             if (regex.test(horario)) {
+                salaSelect.innerHTML = '<option value="" selected disabled>Selecione uma sala</option>';
+                salaSelect.disabled = false; // Habilita a seleção de sala
+                horarioInput.setCustomValidity('');
+
+                    // Formata o horário selecionado para comparação
+                    var horarioSelecionado = new Date();
+                    var [hours, minutes] = horario.split(":").map(Number);
+                    horarioSelecionado.setHours(hours, minutes, 0, 0);
+
+                    salas.forEach(function (sala) {
+                    var salaDisponivel = true;
+
+                    if (sala.HorariosOcupados && sala.HorariosOcupados.length > 0) {
+                    for (var i = 0; i < sala.HorariosOcupados.length; i += 2) {
+                    var inicio = new Date(sala.HorariosOcupados[i]);
+                    var fim = new Date(sala.HorariosOcupados[i + 1]);
+
+                    // Verifica se o horário selecionado está dentro do intervalo ocupado
+                    if (horarioSelecionado >= inicio && horarioSelecionado <= fim) {
+                    salaDisponivel = false;
+                    break;
+                    }
+                    }
+                    }
+
+                    if (salaDisponivel) {
+                    var option = document.createElement('option');
+                    option.value = sala;
+                    option.text = i;
+                    salaSelect.appendChild(option);
+                    }
+            }
+
+            } else {
+                salaSelect.disabled = true; // Desabilita a seleção de sala
+                horarioInput.setCustomValidity('Horário inválido. Deve estar no formato hh:mm e entre 00:00 e 23:59');
+            }
+        }*@
+
+
+        horarioInput.addEventListener('input', validarHorario);
+        validarHorario();
+    });
+</script>

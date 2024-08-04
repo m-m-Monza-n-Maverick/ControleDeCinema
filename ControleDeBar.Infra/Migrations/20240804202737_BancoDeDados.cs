@@ -34,7 +34,9 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Capacidade = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
+                    Capacidade = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    HorariosOcupados = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Ocupada = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

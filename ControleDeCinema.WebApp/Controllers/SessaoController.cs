@@ -57,8 +57,8 @@ namespace ControleDeCinema.WebApp.Controllers
             var repositorioFilme = new RepositorioFilmeEmOrm(db);
             var repositorioSala = new RepositorioSalaEmOrm(db);
 
-			ViewBag.Filmes = repositorioFilme.SelecionarTodos();
-			ViewBag.Salas = repositorioSala.SelecionarTodos();
+            ViewBag.Salas = repositorioSala.SelecionarTodos();
+            ViewBag.Filmes = repositorioFilme.SelecionarTodos();
 
             return View();
 		}
@@ -74,6 +74,9 @@ namespace ControleDeCinema.WebApp.Controllers
 
 			var filme = repositorioFilme.SelecionarPorId(inserirSessaoVm.FilmeId);
             var sala = repositorioSala.SelecionarPorId(inserirSessaoVm.SalaId);
+
+			sala.HorariosOcupados = [inserirSessaoVm.Horario, inserirSessaoVm.Horario + filme.Duracao];
+			repositorioSala.Editar(sala);
 
             var novaSessao = new Sessao(sala, inserirSessaoVm.Horario, filme);
 

@@ -4,14 +4,11 @@
 @{
 	Layout = "_Layout";
 	ViewBag.Title = "Lista de Filmes";
-
 	var sessoes = ViewBag.Sessoes;
 }
 
-@if (Model.Count() == 0)
-{
-	<label class="control-label fw-semibold mt-1 mx-1">Ainda não existem filmes cadastrados :(</label>
-}
+@if (Model.Count() == 0) {
+	<label class="control-label fw-semibold mt-1 mx-1">Ainda não existem filmes cadastrados :(</label> }
 
 <div class="mt-3">
 	<a class="btn btn-primary px-4" href="/filme/inserir">
@@ -36,34 +33,23 @@
 							<i class="bi bi-search"></i>
 						</a>
 
-						<a class="btn btn-primary btn-sm" href="/filme/editar/@filme.Id">
+						@{var habilitado = "";
+						foreach (Sessao sessao in sessoes)
+							if (sessao.Filme.Id == filme.Id)
+								if (DateTime.Now <= sessao.Horario + sessao.Filme.Duracao)
+									habilitado = "disabled"; }
+
+						<a class="btn btn-primary btn-sm @habilitado" href="/filme/editar/@filme.Id">
 							<i class="bi bi-pencil-square"></i>
 						</a>
 
-						@{
-							var ocupado = false;
-						}
+						@{foreach (Sessao sessao in sessoes)
+							if (sessao.Filme.Id == filme.Id)
+								habilitado = "disabled"; }
 
-						@foreach (Sessao sessao in sessoes)
-						{
-							@if (sessao.Filme.Id == filme.Id)
-							{ ocupado = true; }
-
-						}
-
-						@if (ocupado)
-						{
-							<a class="btn btn-danger btn-sm disabled" href="/filme/excluir/@filme.Id">
-								<i class="bi bi-trash3"></i>
-							</a>
-						}
-						else
-						{
-							<a class="btn btn-danger btn-sm" href="/filme/excluir/@filme.Id">
-								<i class="bi bi-trash3"></i>
-							</a>
-						}
-
+						<a class="btn btn-danger btn-sm @habilitado" href="/filme/excluir/@filme.Id">
+							<i class="bi bi-trash3"></i>
+						</a>
 					</div>
 				</div>
 

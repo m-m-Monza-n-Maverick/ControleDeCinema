@@ -24,7 +24,8 @@ namespace ControleDeCinema.WebApp.Controllers
                     new ListarSalaViewModel
                     {
                         Id = s.Id,
-                        Capacidade = s.Capacidade
+                        Capacidade = s.Capacidade,
+                        Ocupada = s.Ocupada
                     });
 
             return View(listarSalasVm);

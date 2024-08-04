@@ -6,6 +6,7 @@ namespace ControleDeCinema.WebApp.Models
     {
         public int Id { get; set; }
         public decimal Capacidade { get; set; }
+        public bool Ocupada { get; set; }
     }
 
     public class InserirSalaViewModel

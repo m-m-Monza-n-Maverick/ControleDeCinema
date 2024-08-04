@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ControleDeCinema.Infra.Orm.Migrations
 {
     [DbContext(typeof(ControleDeCinemaDbContext))]
-    [Migration("20240803231214_BancoDeDados")]
+    [Migration("20240804202737_BancoDeDados")]
     partial class BancoDeDados
     {
         /// <inheritdoc />
@@ -92,7 +92,14 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Capacidade")
-                        .HasColumnType("decimal");
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("HorariosOcupados")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Ocupada")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

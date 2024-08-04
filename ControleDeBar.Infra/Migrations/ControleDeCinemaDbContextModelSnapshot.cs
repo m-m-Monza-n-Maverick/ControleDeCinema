@@ -89,7 +89,14 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Capacidade")
-                        .HasColumnType("decimal");
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("HorariosOcupados")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Ocupada")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

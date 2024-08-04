@@ -59,18 +59,30 @@ namespace ControleDeCinema.Infra.Orm.Compartilhado
                     .HasColumnType("nvarchar(255)");
             });
 
-			modelBuilder.Entity<Sala>(salaBuilder =>
-			{
-				salaBuilder.ToTable("TBSala");
+            modelBuilder.Entity<Sala>(salaBuilder =>
+            {
+                salaBuilder.ToTable("TBSala");
 
-				salaBuilder.Property(s => s.Id)
-					.IsRequired()
-					.ValueGeneratedOnAdd();
+                salaBuilder.Property(s => s.Id)
+                    .IsRequired()
+                    .ValueGeneratedOnAdd();
 
-				salaBuilder.Property(s => s.Capacidade)
-					.IsRequired()
-					.HasColumnType("decimal");
-			});
+                salaBuilder.Property(e => e.Capacidade)
+                      .IsRequired()
+                      .HasColumnType("decimal(18,2)");
+
+                salaBuilder.Property(s => s.HorariosOcupados)
+                      .HasConversion(
+                          v => string.Join(',', v.Select(d => d.ToString("o"))),
+                          v => v.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                .Select(d => DateTime.Parse(d))
+                                .ToList())
+                      .HasColumnType("nvarchar(max)")
+                      .Metadata.SetValueComparer(new ValueComparer<List<DateTime>>(
+                          (c1, c2) => c1.SequenceEqual(c2),
+                          c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                          c => c.ToList()));
+                      });
 
             modelBuilder.Entity<Sessao>(sessaoBuilder =>
             {

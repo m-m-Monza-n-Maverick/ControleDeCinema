@@ -5,8 +5,6 @@ using ControleDeCinema.Infra.Orm.Compartilhado;
 using Microsoft.AspNetCore.Mvc;
 using ControleDeCinema.WebApp.Models;
 using ControleDeBar.Infra.Orm.ModuloSessao;
-using ControleDeCinema.Dominio.ModuloSala;
-using ControleDeCinema.Dominio.ModuloSessao;
 namespace ControleDeCinema.WebApp.Controllers
 {
 	public class FilmeController : Controller
