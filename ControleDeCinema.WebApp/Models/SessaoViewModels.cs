@@ -19,6 +19,7 @@ namespace ControleDeCinema.WebApp.Models
         public DateTime Horario { get; set; }
         public Filme Filme { get; set; }
         public Sala Sala { get; set; }
+        public List<string> poltronasOcupadas { get; set; }
     }
 
     public class InserirSessaoViewModel

@@ -20,85 +20,56 @@
 <div class="row gap-3 mt-3 p-2">
 	@foreach (var sessao in Model)
 	{
-		@if (sessao.Encerrada)
+		var border = "border-secondary";
+		var text = "";
+		var estado = "";
+		var habilitado = "";
+
+		if (DateTime.Now >= sessao.Horario)
+			estado = "[EM ANDAMENTO]";
+
+		if (sessao.Encerrada)
 		{
-			<div class="card col-md-5 col-lg-5 col-xl-4 border-danger">
-				<div class="card-body text-danger">
-					<div class="row row-cols-2">
-						<label class="card-title fs-5 fw-semibold">Filme: @sessao.Filme</label>
-						<div class="text-end">
-							<a class="btn btn-secondary btn-sm" href="/sessao/detalhes/@sessao.Id">
-								<i class="bi bi-search"></i>
-							</a>
+			border = "border-danger";
+			text = "text-danger";
+			estado = "[ENCERRADA]";
+			habilitado = "disabled";
+		}
 
-							<a class="btn btn-primary btn-sm disabled" href="/sessao/editar/@sessao.Id">
-								<i class="bi bi-pencil-square"></i>
-							</a>
+		if (sessao.NumIngressosDisponiveis == 0)
+			estado += "[ESGOTADA]";
 
-							<a class="btn btn-danger btn-sm disabled" href="/sessao/excluir/@sessao.Id">
-								<i class="bi bi-trash3"></i>
-							</a>
-						</div>
-					</div>
-					<p class="card-subtitle fs-6"><strong>Horário:</strong> @sessao.Horario.ToShortTimeString()</p>
-					<div class="row row-cols-2">
-						<p class="card-subtitle fs-6"><strong>Id:</strong> [@sessao.Id]</p>
-						<p class="card-subtitle text-end" style="font-size: 12px"><strong>[ENCERRADA]</strong></p>
+		if (sessao.NumIngressosDisponiveis != sessao.Sala.Capacidade)
+			habilitado = "disabled";
+
+		if (ViewBag.Linha == sessao.Id){
+			<hr /> }
+
+		<div class="card col-md-5 col-lg-5 col-xl-4 @border">
+			<div class="card-body @text">
+				<div class="row row-cols-2">
+					<label class="card-title fs-5 fw-semibold">Filme: @sessao.Filme</label>
+					<div class="text-end">
+						<a class="btn btn-secondary btn-sm" href="/sessao/detalhes/@sessao.Id">
+							<i class="bi bi-search"></i>
+						</a>
+
+						<a class="btn btn-primary btn-sm @habilitado" href="/sessao/editar/@sessao.Id">
+							<i class="bi bi-pencil-square"></i>
+						</a>
+
+						<a class="btn btn-danger btn-sm @habilitado" href="/sessao/excluir/@sessao.Id">
+							<i class="bi bi-trash3"></i>
+						</a>
 					</div>
 				</div>
-			</div>
-		}
-		else
-		{
-			<div class="card col-md-5 col-lg-5 col-xl-4 border-secondary">
-				<div class="card-body">
-					<div class="row row-cols-2">
-						<label class="card-title fs-5 fw-semibold">Filme: @sessao.Filme</label>
-						<div class="text-end">
-							<a class="btn btn-secondary btn-sm" href="/sessao/detalhes/@sessao.Id">
-								<i class="bi bi-search"></i>
-							</a>
-
-							@if(sessao.NumIngressosDisponiveis != sessao.Sala.Capacidade)
-							{
-								<a class="btn btn-primary btn-sm disabled" href="/sessao/editar/@sessao.Id">
-									<i class="bi bi-pencil-square"></i>
-								</a>
-
-								<a class="btn btn-danger btn-sm disabled" href="/sessao/excluir/@sessao.Id">
-									<i class="bi bi-trash3"></i>
-								</a>
-							}
-							else
-							{
-								<a class="btn btn-primary btn-sm" href="/sessao/editar/@sessao.Id">
-									<i class="bi bi-pencil-square"></i>
-								</a>
-
-								<a class="btn btn-danger btn-sm" href="/sessao/excluir/@sessao.Id">
-									<i class="bi bi-trash3"></i>
-								</a>
-							}
-
-							@*<div class="d-block mt-1">
-								<a class="btn btn-light btn-sm border-secondary" href="">
-									vender sessão
-								</a>
-							</div>*@
-						</div>
-					</div>
-
-					<p class="card-subtitle fs-6"><strong>Horário:</strong> @sessao.Horario.ToShortTimeString()</p>
-					<div class="row row-cols-2">
-						<p class="card-subtitle fs-6"><strong>Id:</strong> [@sessao.Id]</p>
-						@if (sessao.NumIngressosDisponiveis == 0)
-						{
-							<p class="card-subtitle text-end" style="font-size: 12px"><strong>[ESGOTADA]</strong></p>
-						}
-					</div>
+				<p class="card-subtitle fs-6"><strong>Horário:</strong> @sessao.Horario.ToString(@"dd/MM") @sessao.Horario.ToShortTimeString()</p>
+				<div class="row row-cols-2">
+					<p class="card-subtitle fs-6"><strong>Id:</strong> [@sessao.Id]</p>
+					<p class="card-subtitle text-end" style="font-size: 12px"><strong>@estado</strong></p>
 				</div>
 			</div>
-		}
+		</div>
 	}
 </div>
 

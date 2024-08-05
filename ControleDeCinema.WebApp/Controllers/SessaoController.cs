@@ -6,6 +6,7 @@ using ControleDeCinema.Dominio.ModuloSessao;
 using ControleDeCinema.Infra.Orm.Compartilhado;
 using ControleDeCinema.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 namespace ControleDeCinema.WebApp.Controllers
 {
 	public class SessaoController : Controller
@@ -16,6 +17,11 @@ namespace ControleDeCinema.WebApp.Controllers
 			var repositorioSessao = new RepositorioSessaoEmOrm(db);
 
 			var sessoes = repositorioSessao.SelecionarTodos();
+
+			sessoes = [.. sessoes.OrderBy(s => s.Horario)];
+			sessoes = [.. sessoes.OrderBy(s => s.Encerrada)];
+
+			ViewBag.Linha = sessoes.Find(s => s.Encerrada)!.Id;
 
 			var listarSessaosVm = sessoes // mapeamento
 				.Select(s =>
@@ -44,7 +50,8 @@ namespace ControleDeCinema.WebApp.Controllers
 				Id = id,
 				Filme = sessao.Filme,
 				Horario = sessao.Horario,
-				Sala = sessao.Sala
+				Sala = sessao.Sala,
+				poltronasOcupadas = sessao.poltronasOcupadas
 			};
 
 			return View(detalhesSessaoVm);

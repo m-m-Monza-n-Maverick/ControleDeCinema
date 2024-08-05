@@ -27,7 +27,7 @@
             <div class="mb-3">
                 <label for="Horario" class="form-label">Horário da sessão:</label>
                 <input type="time" class="form-control" id="horario" asp-for="Horario" required />
-                <div class="invalid-feedback">O horário é obrigatório e deve estar no formato hh:mm</div>
+                <div class="invalid-feedback">O horário é obrigatório</div>
             </div>
 
             <div class="mb-3">
@@ -86,12 +86,21 @@
         function validarHorario() {
             var horario = horarioInput.value;
 
-            if (!horario) {
-                salaSelect.disabled = true;
-                return;
+            // Obtém o horário atual
+            var agora = new Date();
+            var [hours, minutes] = horario.split(":").map(Number);
+
+            // Cria um objeto Date para o horário selecionado
+            var horarioSelecionado = new Date();
+            horarioSelecionado.setHours(hours, minutes, 0, 0);
+
+            if (horarioSelecionado > agora) {
+                salaSelect.disabled = false; // Habilita a seleção de sala
+                horarioInput.setCustomValidity('');
+            } else {
+                salaSelect.disabled = true; // Desabilita a seleção de sala
+                horarioInput.setCustomValidity('O horário deve ser maior que o horário atual.');
             }
-            else
-                salaSelect.disabled = false;
         }
 
           @* var regex = /^(?:[01]\d|2[0-3]):[0-5]\d$/; // Validação para formato HH:MM
@@ -135,7 +144,6 @@
                 horarioInput.setCustomValidity('Horário inválido. Deve estar no formato hh:mm e entre 00:00 e 23:59');
             }
         }*@
-
 
         horarioInput.addEventListener('input', validarHorario);
         validarHorario();
