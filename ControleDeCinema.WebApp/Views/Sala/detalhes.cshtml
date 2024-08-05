@@ -99,36 +99,26 @@
         {
             for (int j = 1; j < 17; j++)
             {
-                if (j == 1)
-                {
-                    <div class="aisle3">@Convert.ToChar(i)</div>
-                }
+                if (j == 1) {
+                    <div class="aisle3">@Convert.ToChar(i)</div> }
 
-                if (j == 9 && i != filasContagem)
-                {
-                    <div class="aisle"></div>
-                }
+                if (j == 9 && i != filasContagem) {
+                    <div class="aisle"></div> }
 
                 <div class="seat"></div>
                 poltronas++;
 
                 if (i == filasContagem)
                 {
-                    if (j == Math.Ceiling(poltronasExtras / 2))
-                    {
-                        <div class="aisle"></div>
-                    }
+                    if (j == Math.Ceiling(poltronasExtras / 2)) {
+                        <div class="aisle"></div> }
 
-                    if (j == poltronasExtras)
-                    {
-                        <div class="aisle3">@Convert.ToChar(i)</div>
-                    }
+                    if (j == poltronasExtras) {
+                        <div class="aisle3">@Convert.ToChar(i)</div> }
                 }
 
-                if (j == 16)
-                {
-                    <div class="aisle3">@Convert.ToChar(i)</div>
-                }
+                if (j == 16) {
+                    <div class="aisle3">@Convert.ToChar(i)</div> }
 
                 if (poltronas == capacidade)
                     break;
@@ -137,16 +127,12 @@
             if (poltronas == capacidade)
                 break;
 
-            if (i == 64 + Math.Floor(filasInteiras / 2) || i == filasContagem - 1)
-            {
-                <div class="aisle2"></div>
-            }
+            if (i == 64 + Math.Floor(filasInteiras / 2) || i == filasContagem - 1) {
+                <div class="aisle2"></div> }
         }
 
-        @if (poltronasExtras % 2 != 0)
-        {
-            <div class="aisle3"></div>
-        }
+        @if (poltronasExtras % 2 != 0) {
+            <div class="aisle3"></div> }
     </div>
 </div>
 

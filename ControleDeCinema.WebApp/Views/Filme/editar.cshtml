@@ -40,7 +40,7 @@
             
 			<div class="mt-2">
 				<label class="control-label fw-semibold">Duração:</label>
-				<input type="00:00:00" class="form-control" asp-for="Duracao" id="duracao"/>
+				<input class="form-control" asp-for="Duracao" id="duracao"/>
 				<span class="text-danger my-3" asp-validation-for="Duracao"></span>
 			</div>			
 		
@@ -58,20 +58,6 @@
 				</select>
 			</div>
 
-			<div class="col-lg-4">
-				@if (Model.ImageData != null && Model.ImageData.Length > 0)
-				{
-					var base64Image = Convert.ToBase64String(Model.ImageData);
-					var imageSrc = $"data:{Model.ImageContentType};base64,{base64Image}";
-
-					<img src="@imageSrc" alt="Pôster do Filme" class="img-fluid mb-3" />
-				}
-				else
-				{
-					<p><em>Imagem não disponível.</em></p>
-				}
-			</div>
-
 			<div class="mt-2 d-grid gap-2 d-md-block">
 				<button class="btn btn-primary px-5">
 					<i class="bi bi-floppy-fill me-1"></i>
@@ -83,9 +69,7 @@
 					Voltar
 				</a>
 			</div>
-
 		</form>
-
 	</div>
 </div>
 

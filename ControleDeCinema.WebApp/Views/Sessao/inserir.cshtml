@@ -1,5 +1,151 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Newtonsoft.Json
+@model ControleDeCinema.WebApp.Models.InserirSessaoViewModel
+
 @{
+    Layout = "_Layout";
+    ViewBag.Title = "Cadastro de Sessão";
+
+    var filmes = ViewBag.Filmes;
+    var salas = ViewBag.Salas;
 }
+
+<div class="row mt-3">
+    <div class="col-lg-6">
+        <form id="sessaoForm" class="needs-validation" asp-action="Inserir" method="post" enctype="multipart/form-data" novalidate>
+            <div class="mb-3">
+                <label for="Filme" class="form-label">Filme:</label>
+                <select class="form-select" id="Filme" asp-for="FilmeId" required>
+                    <option value="" selected disabled>Selecione um filme</option>
+                    @foreach (var filme in filmes)
+                    {
+                        <option value="@filme.Id">@filme</option>
+                    }
+                </select>
+                <div class="invalid-feedback">O filme é obrigatório.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="Horario" class="form-label">Horário da sessão:</label>
+                <input type="time" class="form-control" id="horario" asp-for="Horario" required />
+                <div class="invalid-feedback">O horário é obrigatório</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="Sala" class="form-label">Sala:</label>
+                <select class="form-select" id="Sala" asp-for="SalaId" disabled required>
+                    <option value="" selected disabled>Selecione uma sala</option>
+                    @foreach (var sala in salas)
+                    {
+                        <option value="@sala.Id">@sala</option>
+                    }
+                </select>
+                <div class="invalid-feedback">A sala é obrigatória.</div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-block">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-floppy-fill me-1"></i>
+                    Gravar
+                </button>
+
+                <a class="btn btn-secondary" href="/sessao/listar">
+                    <i class="bi bi-arrow-return-left me-1"></i>
+                    Voltar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    (function () {
+        'use strict'
+
+        // Busca todos os formulários que necessitam de validação personalizada
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Faz um loop sobre eles e evita o envio
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })();
+
+    
+    // Validação do horário e habilitação da sala
+    document.addEventListener('DOMContentLoaded', function () {
+        var horarioInput = document.getElementById('horario');
+        var salaSelect = document.getElementById('Sala');
+
+        function validarHorario() {
+            var horario = horarioInput.value;
+
+            // Obtém o horário atual
+            var agora = new Date();
+            var [hours, minutes] = horario.split(":").map(Number);
+
+            // Cria um objeto Date para o horário selecionado
+            var horarioSelecionado = new Date();
+            horarioSelecionado.setHours(hours, minutes, 0, 0);
+
+            if (horarioSelecionado > agora) {
+                salaSelect.disabled = false; // Habilita a seleção de sala
+                horarioInput.setCustomValidity('');
+            } else {
+                salaSelect.disabled = true; // Desabilita a seleção de sala
+                horarioInput.setCustomValidity('O horário deve ser maior que o horário atual.');
+            }
+        }
+
+          @* var regex = /^(?:[01]\d|2[0-3]):[0-5]\d$/; // Validação para formato HH:MM
+
+             if (regex.test(horario)) {
+                salaSelect.innerHTML = '<option value="" selected disabled>Selecione uma sala</option>';
+                salaSelect.disabled = false; // Habilita a seleção de sala
+                horarioInput.setCustomValidity('');
+
+                    // Formata o horário selecionado para comparação
+                    var horarioSelecionado = new Date();
+                    var [hours, minutes] = horario.split(":").map(Number);
+                    horarioSelecionado.setHours(hours, minutes, 0, 0);
+
+                    salas.forEach(function (sala) {
+                    var salaDisponivel = true;
+
+                    if (sala.HorariosOcupados && sala.HorariosOcupados.length > 0) {
+                    for (var i = 0; i < sala.HorariosOcupados.length; i += 2) {
+                    var inicio = new Date(sala.HorariosOcupados[i]);
+                    var fim = new Date(sala.HorariosOcupados[i + 1]);
+
+                    // Verifica se o horário selecionado está dentro do intervalo ocupado
+                    if (horarioSelecionado >= inicio && horarioSelecionado <= fim) {
+                    salaDisponivel = false;
+                    break;
+                    }
+                    }
+                    }
+
+                    if (salaDisponivel) {
+                    var option = document.createElement('option');
+                    option.value = sala;
+                    option.text = i;
+                    salaSelect.appendChild(option);
+                    }
+            }
+
+            } else {
+                salaSelect.disabled = true; // Desabilita a seleção de sala
+                horarioInput.setCustomValidity('Horário inválido. Deve estar no formato hh:mm e entre 00:00 e 23:59');
+            }
+        }*@
+
+        horarioInput.addEventListener('input', validarHorario);
+        validarHorario();
+    });
+</script>

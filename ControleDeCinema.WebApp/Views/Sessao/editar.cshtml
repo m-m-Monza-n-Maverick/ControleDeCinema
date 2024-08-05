@@ -1,5 +1,68 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ControleDeCinema.WebApp.Models.EditarSessaoViewModel;
+
 @{
+	Layout = "_Layout";
+	ViewBag.Title = "Edição de Sessão";
+
+	var filmes = ViewBag.Filmes;
+	var salas = ViewBag.Salas;
+}
+
+<div class="row mt-3">
+	<div class="col-lg-6">
+		<form class="d-grid gap-4" asp-action="Editar">
+
+			<div class="mb-3">
+				<label for="Filme" class="form-label">Filme:</label>
+				<select class="form-select" id="Filme" asp-for="FilmeId" required>
+					<option value="" selected disabled>Selecione um filme</option>
+					@foreach (var filme in filmes)
+					{
+						<option value="@filme.Id">@filme</option>
+					}
+				</select>
+				<div class="invalid-feedback">O filme é obrigatório.</div>
+			</div>
+
+			<div class="mb-3">
+				<label for="Horario" class="form-label">Horário da sessão:</label>
+				<input type="text" class="form-control" id="horario" asp-for="Horario" required value="@Model.Horario.ToShortTimeString()"/>
+				<div class="invalid-feedback">O horário é obrigatório.</div>
+			</div>
+
+			<div class="mb-3">
+				<label for="Sala" class="form-label">Sala:</label>
+				<select class="form-select" id="Sala" asp-for="SalaId" required>
+					<option value="" selected disabled>Selecione uma sala</option>
+					@foreach (var sala in salas)
+					{
+						<option value="@sala.Id">@sala</option>
+					}
+				</select>
+				<div class="invalid-feedback">A sala é obrigatória.</div>
+			</div>
+
+			<div class="mt-2 d-grid gap-2 d-md-block">
+				<button class="btn btn-primary px-5">
+					<i class="bi bi-floppy-fill me-1"></i>
+					Gravar
+				</button>
+
+				<a class="btn btn-secondary px-5" href="/sessao/listar">
+					<i class="bi bi-arrow-return-left me-1"></i>
+					Voltar
+				</a>
+			</div>
+
+		</form>
+
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$("#horario").mask("00:00", { reverse: true })
+		});
+	</script>
 }

@@ -25,7 +25,7 @@
 		}
 		protected void VerificaNulo(ref List<string> erros, DateTime campoTestado, string mostraCampo)
 		{
-			if (string.IsNullOrEmpty(campoTestado.ToString()))
+			if (campoTestado == DateTime.MinValue)
 				erros.Add($"\nO campo \"{mostraCampo}\" é obrigatório. Tente novamente ");
 		}
 		protected void VerificaNulo(ref List<string> erros, TimeSpan campoTestado, string mostraCampo)

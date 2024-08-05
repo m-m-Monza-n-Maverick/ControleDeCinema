@@ -4,6 +4,7 @@ using ControleDeCinema.Dominio.ModuloFilme;
 using ControleDeCinema.Infra.Orm.Compartilhado;
 using Microsoft.AspNetCore.Mvc;
 using ControleDeCinema.WebApp.Models;
+using ControleDeBar.Infra.Orm.ModuloSessao;
 namespace ControleDeCinema.WebApp.Controllers
 {
 	public class FilmeController : Controller
@@ -12,8 +13,10 @@ namespace ControleDeCinema.WebApp.Controllers
 		{
 			var db = new ControleDeCinemaDbContext();
 			var repositorioFilme = new RepositorioFilmeEmOrm(db);
+			var repositorioSessao = new RepositorioSessaoEmOrm(db);
 
-			var filmes = repositorioFilme.SelecionarTodos();
+			var filmes = repositorioFilme.SelecionarTodos(); 
+			ViewBag.Sessoes = repositorioSessao.SelecionarTodos();
 
 			var listarFilmesVm = filmes // mapeamento
 				.Select(f =>
@@ -86,8 +89,6 @@ namespace ControleDeCinema.WebApp.Controllers
 				Titulo = filme.Titulo,
 				Duracao = filme.Duracao,
 				Genero = filme.Genero,
-				ImageData = filme.ImageData,
-				ImageContentType = filme.ImageContentType,
 			};
 
 			return View(editarFilmeVm);

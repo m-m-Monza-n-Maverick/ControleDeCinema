@@ -34,7 +34,9 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Capacidade = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
+                    Capacidade = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    HorariosOcupados = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Ocupada = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,7 +52,7 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                     Sala_Id = table.Column<int>(type: "int", nullable: false),
                     Horario = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Filme_Id = table.Column<int>(type: "int", nullable: false),
-                    NumIngressos = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
+                    NumIngressosDisponiveis = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
                     Encerrada = table.Column<bool>(type: "bit", nullable: false),
                     poltronasOcupadas = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -79,7 +81,6 @@ namespace ControleDeCinema.Infra.Orm.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Meia = table.Column<bool>(type: "bit", nullable: false),
                     Poltrona = table.Column<string>(type: "varchar(10)", nullable: false),
-                    Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Sessao_Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

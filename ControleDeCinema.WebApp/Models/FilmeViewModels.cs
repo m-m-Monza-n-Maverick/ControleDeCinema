@@ -36,9 +36,6 @@ namespace ControleDeCinema.WebApp.Models
 
 		[Required]
 		public string Genero { get; set; }
-
-		public byte[] ImageData { get; set; }
-		public string ImageContentType { get; set; }
 	}
 
 	public class ExcluirFilmeViewModel
