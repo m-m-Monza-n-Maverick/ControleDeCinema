@@ -96,7 +96,7 @@ namespace ControleDeCinema.WebApp.Controllers
             var mensagem = new MensagemViewModel()
             {
                 Mensagem = $"Os ingressos foram comprados com sucesso!",
-                LinkRedirecionamento = "/ingresso/selecionarFilme"
+                LinkRedirecionamento = "/sessao/listar"
             };
 
             return View("mensagens", mensagem);
