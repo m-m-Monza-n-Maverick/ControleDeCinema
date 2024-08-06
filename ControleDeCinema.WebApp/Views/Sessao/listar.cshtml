@@ -42,31 +42,53 @@
 		if (sessao.NumIngressosDisponiveis != sessao.Sala.Capacidade)
 			habilitado = "disabled";
 
-		if (ViewBag.Linha == sessao.Id){
-			<hr /> }
+		if (ViewBag.Linha == sessao.Id)
+		{
+			<hr />
+		}
 
-		<div class="card col-md-5 col-lg-5 col-xl-4 @border">
+		<div class="card col-md-5 col-lg-5 col-xl-4 @border shadow-sm">
 			<div class="card-body @text">
-				<div class="row row-cols-2">
-					<label class="card-title fs-5 fw-semibold">Filme: @sessao.Filme</label>
-					<div class="text-end">
-						<a class="btn btn-secondary btn-sm" href="/sessao/detalhes/@sessao.Id">
+				<div class="row mb-2">
+					<div class="col">
+						<h5 class="card-title fs-5 fw-semibold">Filme: @sessao.Filme</h5>
+					</div>
+					<div class="col text-end">
+						<a class="btn btn-secondary btn-sm" href="/sessao/detalhes/@sessao.Id" title="Ver detalhes">
 							<i class="bi bi-search"></i>
 						</a>
-
-						<a class="btn btn-primary btn-sm @habilitado" href="/sessao/editar/@sessao.Id">
+						<a class="btn btn-primary btn-sm @habilitado" href="/sessao/editar/@sessao.Id" title="Editar sessão">
 							<i class="bi bi-pencil-square"></i>
 						</a>
-
-						<a class="btn btn-danger btn-sm @habilitado" href="/sessao/excluir/@sessao.Id">
+						<a class="btn btn-danger btn-sm @habilitado" href="/sessao/excluir/@sessao.Id" title="Excluir sessão">
 							<i class="bi bi-trash3"></i>
 						</a>
 					</div>
 				</div>
-				<p class="card-subtitle fs-6"><strong>Horário:</strong> @sessao.Horario.ToString(@"dd/MM") @sessao.Horario.ToShortTimeString()</p>
-				<div class="row row-cols-2">
+
+				<div class="row">
+					<div class="col-6">
+						<p class="card-subtitle fs-6"><strong>Horário:</strong> @sessao.Horario.ToString("dd/MM/yyyy") @sessao.Horario.ToShortTimeString()</p>
+					</div>
+					<div class="col-6 text-end">
+						<p class="card-subtitle text-muted" style="font-size: 11px"><strong>@estado</strong></p>
+					</div>
+				</div>
+				<div class="row mt-2">
+					<div class="col-6">
 					<p class="card-subtitle fs-6"><strong>Id:</strong> [@sessao.Id]</p>
-					<p class="card-subtitle text-end" style="font-size: 12px"><strong>@estado</strong></p>
+					</div>
+					@if (!sessao.Encerrada && sessao.NumIngressosDisponiveis != 0)
+					{
+						<div class="col-6 text-end">
+							<form id="sessaoForm" action="/ingresso/selecionarLugares" method="post">
+								<input type="hidden" name="SessaoSelecionadaId" id="SessaoSelecionadaId" value="@sessao.Id" />
+								<button type="submit" class="btn btn-outline-danger btn-sm">
+									Selecionar Lugares
+								</button>
+							</form>
+						</div>
+					}
 				</div>
 			</div>
 		</div>

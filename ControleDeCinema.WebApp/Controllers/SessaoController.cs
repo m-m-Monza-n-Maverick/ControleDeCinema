@@ -11,7 +11,7 @@ namespace ControleDeCinema.WebApp.Controllers
 {
 	public class SessaoController : Controller
 	{
-		public ViewResult Listar()
+        public ViewResult Listar()
 		{
 			var db = new ControleDeCinemaDbContext();
 			var repositorioSessao = new RepositorioSessaoEmOrm(db);
