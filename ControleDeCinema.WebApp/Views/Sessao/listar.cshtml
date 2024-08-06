@@ -68,7 +68,7 @@
 
 				<div class="row">
 					<div class="col-6">
-						<p class="card-subtitle fs-6"><strong>Horário:</strong> @sessao.Horario.ToString("dd/MM/yyyy") @sessao.Horario.ToShortTimeString()</p>
+						<p class="card-subtitle fs-6"><strong>Horário:</strong> @sessao.Horario.ToString("dd/MM") @sessao.Horario.ToShortTimeString()</p>
 					</div>
 					<div class="col-6 text-end">
 						<p class="card-subtitle text-muted" style="font-size: 11px"><strong>@estado</strong></p>
@@ -78,7 +78,7 @@
 					<div class="col-6">
 					<p class="card-subtitle fs-6"><strong>Id:</strong> [@sessao.Id]</p>
 					</div>
-					@if (!sessao.Encerrada && sessao.NumIngressosDisponiveis != 0)
+					@if (!sessao.Encerrada && sessao.NumIngressosDisponiveis != 0 && DateTime.Now < sessao.Horario)
 					{
 						<div class="col-6 text-end">
 							<form id="sessaoForm" action="/ingresso/selecionarLugares" method="post">

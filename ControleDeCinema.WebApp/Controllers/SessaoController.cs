@@ -21,7 +21,10 @@ namespace ControleDeCinema.WebApp.Controllers
 			sessoes = [.. sessoes.OrderBy(s => s.Horario)];
 			sessoes = [.. sessoes.OrderBy(s => s.Encerrada)];
 
-			ViewBag.Linha = sessoes.Find(s => s.Encerrada)!.Id;
+			if (sessoes.Count != 0 && sessoes.Find(s => s.Encerrada) != null)
+				ViewBag.Linha = sessoes.Find(s => s.Encerrada).Id;
+			else
+				ViewBag.Linha = 0;
 
 			var listarSessaosVm = sessoes // mapeamento
 				.Select(s =>
