@@ -17,9 +17,9 @@ namespace ControleDeCinema.Dominio.ModuloSessao
             } 
             private set { } 
         }
-        public bool Encerrada 
-        { 
-            get 
+        public bool Encerrada
+        {
+            get
             {
                 if (Filme is null) return false;
                 if (DateTime.Now > Horario + Filme.Duracao) return true;
