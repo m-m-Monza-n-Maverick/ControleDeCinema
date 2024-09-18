@@ -50,13 +50,13 @@
                         estado = "[EM ANDAMENTO]";
                     }
 
-                    <button type="button" class="btn btn-outline-secondary btn-block sessao-button" @habilitada>
+                    <button type="button" class="btn btn-outline-secondary btn-block sessao-button" data-sessao-id="@sessao.Id" @habilitada>
                         <span class="fw-bold" style="font-size:12px">@estado</span>
                         Sala: @sessao.Sala.Id - Horário: @sessao.Horario.ToShortTimeString()
                     </button>
                 }
 
-                <input type="hidden" name="SessaoSelecionadaId" id="SessaoSelecionadaId" />
+                <input type="hidden" name="SessaoSelecionadaId" id="SessaoSelecionadaId"/>
                 <div id="error-message" class="error-message"></div>
             </div>
 
